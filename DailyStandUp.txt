@@ -1,9 +1,10 @@
 What is not working?
-What is the one thing whivh would bring the greatest improvent?
+What is the one thing which would bring the greatest improvement?
+
+DONT SUBMIT TO GITHUB UNTIL CREDENTIALS ARE HIDDEN
 
 07/03/2021
 Started to webscrape reddit
-DONT SUBMIT TO GITHUB UNTIL CREDENTIALS ARE HIDDEN
 
 Useful resources
 https://www.reddit.com/wiki/api
@@ -12,4 +13,5 @@ https://praw.readthedocs.io/en/latest/code_overview/reddit_instance.html
 unfortunately, this will not be in data set.
 All you can blame is your own procrastination. 
 
-https://www.reddit.com/r/LockdownSkepticism/comments/lx6ds3/china_makes_anal_swab_covid_tests_compulsory_for/
+https://www.reddit.com/r/worldnews/comments/lx7sg0/china_make_covid_anal_swabs_mandatory_for_all/
+https://www.thesun.co.uk/news/14226455/china-anal-swabs-covid-mandatory/
