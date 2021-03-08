@@ -3,6 +3,16 @@ What is the one thing which would bring the greatest improvement?
 
 DONT SUBMIT TO GITHUB UNTIL CREDENTIALS ARE HIDDEN
 
+08/03/2021
+... data types
+First 30 are webscraped, exported to excel. It is 19:50 and I have 0 energy to figure out which column has the wrong date type. 
+
+========================================================
+ 
+ vars(post)
+
+ =======================================================
+
 07/03/2021
 Started to webscrape reddit
 
@@ -10,7 +20,7 @@ Useful resources
 https://www.reddit.com/wiki/api
 https://praw.readthedocs.io/en/latest/code_overview/reddit_instance.html
 
-unfortunately, this will not be in data set.
+Unfortunately, this will not be in data set.
 All you can blame is your own procrastination. 
 
 https://www.reddit.com/r/worldnews/comments/lx7sg0/china_make_covid_anal_swabs_mandatory_for_all/
