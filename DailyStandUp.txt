@@ -1,11 +1,22 @@
 What is not working?
 What is the one thing which would bring the greatest improvement?
 
+STEPS
+
+-Delete temp tables
+-Delete double top 1
 DONT SUBMIT TO GITHUB UNTIL CREDENTIALS ARE HIDDEN
+create file for your credentials
+DATA DICTIONARY
+
+09/03/2021
+The issue was with new kind of the field. Ommited for now. I have link to the original post, if it proves to be useful, can go back and fill in missing. 
+Dropped params and using top30 columns as params.
 
 08/03/2021
 ... data types
 First 30 are webscraped, exported to excel. It is 19:50 and I have 0 energy to figure out which column has the wrong date type. 
+First time eval() was of use.
 
 ========================================================
  
