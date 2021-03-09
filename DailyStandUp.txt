@@ -13,6 +13,17 @@ DATA DICTIONARY
 The issue was with new kind of the field. Ommited for now. I have link to the original post, if it proves to be useful, can go back and fill in missing. 
 Dropped params and using top30 columns as params.
 
+Said to Mr.Amazing that Boris Johnson got Covid (again). He challanged me. 
+Old news, nice to know that Boris Johnson getin Covid is 19th most upvoted post EVER on r/worldnews.
+So either way yestardays scrape will not be useful. 
+
+top_posts = reddit.subreddit('worldnews').top(time_filter='day',limit=30)
+
+try:
+    eval(post._comments)
+except:
+    print("This is an error message!")
+
 08/03/2021
 ... data types
 First 30 are webscraped, exported to excel. It is 19:50 and I have 0 energy to figure out which column has the wrong date type. 
