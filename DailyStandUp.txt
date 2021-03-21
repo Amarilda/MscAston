@@ -9,8 +9,16 @@ DONT SUBMIT TO GITHUB UNTIL CREDENTIALS ARE HIDDEN
 create file for your credentials
 DATA DICTIONARY
 
+21/03/2021
+I forgot to webscrape reddit yesterday. Did fall asleep at the middle of the Olsen Banden (the was unintentional, appears I have made amendments of use of the useless THE)
+In a process of figuring out how to back-engineer yesterdays data, it was discovered that it is rolling 24 hour window for top. 
+
+reddit.subreddit('worldnews').top(time_filter='day', limit=30)
+
+I can increase the dataset before 09/03/2021. China's anal swabs can be part of the data set after all. Victory for the humanity.
+
 09/03/2021
-The issue was with new kind of the field. Ommited for now. I have link to the original post, if it proves to be useful, can go back and fill in missing. 
+The issue was with new kind of the field. Omitted for now. I have link to the original post, if it proves to be useful, can go back and fill in missing. 
 Dropped params and using top30 columns as params.
 
 Said to Mr.Amazing that Boris Johnson got Covid (again). He challanged me. 
