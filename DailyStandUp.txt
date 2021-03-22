@@ -8,22 +8,32 @@ STEPS
 DONT SUBMIT TO GITHUB UNTIL CREDENTIALS ARE HIDDEN
 create file for your credentials
 DATA DICTIONARY
+Fix 20/03/2021 so it will appear as the date
+
 
 21/03/2021
-I forgot to webscrape reddit yesterday. Did fall asleep at the middle of the Olsen Banden (the was unintentional, appears I have made amendments of use of the useless THE)
++ from credentials import credentials
++ Reddit goes to the GitHub. Now I can be less diligent of not deleting some nugget of pure gold. 
+
+I forgot to webscrape reddit yesterday. Did fall asleep at the middle of the Olsen Banden.
 In a process of figuring out how to back-engineer yesterdays data, it was discovered that it is rolling 24 hour window for top. 
 
 reddit.subreddit('worldnews').top(time_filter='day', limit=30)
 
 I can increase the dataset before 09/03/2021. China's anal swabs can be part of the data set after all. Victory for the humanity.
 
+There are duplicates in the data set. Should the votes be agglomerated for the duplicates? 
+What about when it is top on two days (as it is rolling 26ish hour window)?
+What about time of my webscraping, it is PM. However, market is not open and if I would trade the trade would be implemented next morning/day (assuming they are Speedy Gonzales with my trade). So would not it make more economical sense to do it at something ridiculous as 6AM? Or time which is equivalent for America's 6AM, SP500 is traded in USA.
+That reminds me that I still have not read Millionaires morning. 
+
 09/03/2021
 The issue was with new kind of the field. Omitted for now. I have link to the original post, if it proves to be useful, can go back and fill in missing. 
 Dropped params and using top30 columns as params.
 
-Said to Mr.Amazing that Boris Johnson got Covid (again). He challanged me. 
-Old news, nice to know that Boris Johnson getin Covid is 19th most upvoted post EVER on r/worldnews.
-So either way yestardays scrape will not be useful. 
+Said to Mr.Amazing that Boris Johnson got Covid (again). He challenged me. 
+Old news, nice to know that Boris Johnson getting Covid is 19th most up-voted post EVER on r/worldnews.
+So either way yesterdays scrape will not be useful. 
 
 top_posts = reddit.subreddit('worldnews').top(time_filter='day',limit=30)
 
