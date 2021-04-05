@@ -2,13 +2,17 @@ What is not working?
 What is the one thing which would bring the greatest improvement?
 
 STEPS
-
--Delete temp tables
--Delete double top 1
-DONT SUBMIT TO GITHUB UNTIL CREDENTIALS ARE HIDDEN
-create file for your credentials
+Delete double top 1
 DATA DICTIONARY
 Fix 20/03/2021 so it will appear as the date
+
+
+05/04/2021
+2 new fields appered on the Reddit webscrape.
+ETL.
+Create daily table, which later goes into main one?
+Transfer UTC time to the local time. While we are there.
+
 
 
 21/03/2021
