@@ -13,8 +13,6 @@ ETL.
 Create daily table, which later goes into main one?
 Transfer UTC time to the local time. While we are there.
 
-
-
 21/03/2021
 + from credentials import credentials
 + Reddit goes to the GitHub. Now I can be less diligent of not deleting some nugget of pure gold. 
