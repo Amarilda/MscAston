@@ -6,6 +6,12 @@ Delete double top 1
 DATA DICTIONARY
 Fix 20/03/2021 so it will appear as the date
 
+7/4
+Got string working for creating the dailt table depending on how many different variables are present in the daily scrape.
+Need to fix an actual injection part.
+Seems like top posts should be called again.
+Did get more working then I have planned this morning. 
+No Nils though. 
 
 05/04/2021
 2 new fields appered on the Reddit webscrape.
