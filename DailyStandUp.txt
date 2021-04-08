@@ -5,16 +5,27 @@ STEPS
 Delete double top 1
 DATA DICTIONARY
 Fix 20/03/2021 so it will appear as the date
+What to do with cross posts
+
+FEATURE ENGINEERING
+UTC to GMT+1
+Is_weekday
+Get data for all of march, should I do it from January?
+
+8/4
+Automatic daily table creation succeeded. 
+It went easier than I have anticipated.
+Next - put webscraping in .py and schedule with scheduler.
 
 7/4
-Got string working for creating the dailt table depending on how many different variables are present in the daily scrape.
+Got string working for creating the daily table depending on how many different variables are present in the daily scrape.
 Need to fix an actual injection part.
 Seems like top posts should be called again.
 Did get more working then I have planned this morning. 
 No Nils though. 
 
 05/04/2021
-2 new fields appered on the Reddit webscrape.
+2 new fields appeared on the Reddit webscrape.
 ETL.
 Create daily table, which later goes into main one?
 Transfer UTC time to the local time. While we are there.
