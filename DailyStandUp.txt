@@ -12,6 +12,15 @@ UTC to GMT+1
 Is_weekday
 Get data for all of march, should I do it from January?
 
+15/4
+Converted automatic table creation into .py.
+-----
+python MSC/er.py
+-----
+
+sqlite3.OperationalError: no such table: top30
+Need to get rid of top30 individual run and create ETL for all daily tables. 
+
 8/4
 Automatic daily table creation succeeded. 
 It went easier than I have anticipated.
