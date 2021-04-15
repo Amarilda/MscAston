@@ -30,7 +30,7 @@ for post in top_posts:
             if m not in kolonas:
                 kolonas.append(m)
                 
-sodiena = str("ER"+datetime.date.today().strftime('%Y%m%d')+"a")
+sodiena = str("ER"+datetime.date.today().strftime('%Y%m%d'))
 
 createtable = ""
 columnnames = ""
@@ -51,7 +51,7 @@ for k in kolonas:
     z+= -1
     
 #Drop and create the todays table
-connection = sqlite3.connect('MSC.db')
+connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
 a = f"cursor.executescript('DROP TABLE IF EXISTS {sodiena}')"
 b = f"cursor.execute('''CREATE TABLE {sodiena} ({createtable} )''')"
@@ -72,7 +72,7 @@ for post in top_posts:
         except:
             atbilde.append("")
     
-    connection = sqlite3.connect('MSC.db')
+    connection = sqlite3.connect('MSC/MSC.db')
     cursor = connection.cursor()
     sql2 = f'cursor.execute("insert INTO  {sodiena} ({columnnames}) VALUES ({insertintotable})", {atbilde})'
     eval(sql2)
@@ -87,7 +87,7 @@ print("Individual table is created")
 top_posts = reddit.subreddit('worldnews').top(time_filter='day',limit=30)
 i = 1
 
-connection = sqlite3.connect('MSC.db')
+connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
 sql = ('Select * from top30')
 z = pd.read_sql_query(sql,connection)
@@ -115,5 +115,4 @@ for post in top_posts:
     
     i +=1
 
-    
 print("Todays data is appended to top30")
