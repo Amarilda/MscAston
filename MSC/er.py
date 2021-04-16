@@ -84,6 +84,8 @@ for post in top_posts:
 print("Individual table is created")
 
 ### Append to top 30
+connection = sqlite3.connect('MSC/MSC.db')
+cursor = connection.cursor()
 top_posts = reddit.subreddit('worldnews').top(time_filter='day',limit=30)
 i = 1
 
