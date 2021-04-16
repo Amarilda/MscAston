@@ -4,13 +4,22 @@ What is the one thing which would bring the greatest improvement?
 STEPS
 Delete double top 1
 DATA DICTIONARY
-Fix 20/03/2021 so it will appear as the date
-What to do with cross posts
+Fix 20/03/2021 so it will appear as the date.
+What to do with cross posts.
+Add extra check so it would not let me create nedless new DBs. 
 
 FEATURE ENGINEERING
 UTC to GMT+1
 Is_weekday
 Get data for all of march, should I do it from January?
+
+16/4
+If .py is run from the MSC parent folder, full path need to be provided.
+
+-----
+connection = sqlite3.connect('MSC.db')
+connection = sqlite3.connect('MSC/MSC.db')
+-----
 
 15/4
 Converted automatic table creation into .py.
