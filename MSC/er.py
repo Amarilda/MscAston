@@ -19,7 +19,7 @@ reddit = praw.Reddit(
 
 print(reddit.user.me())
 
-
+'''
 ###Individual table
 top_posts = reddit.subreddit('worldnews').top(time_filter='day',limit=30)
 
@@ -54,8 +54,11 @@ for k in kolonas:
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
 a = f"cursor.executescript('DROP TABLE IF EXISTS {sodiena}')"
-b = f"cursor.execute('''CREATE TABLE {sodiena} ({createtable} )''')"
+'''
 
+#b = f"cursor.execute('''CREATE TABLE {sodiena} ({createtable} )''')"
+
+'''
 eval(a)
 eval(b)
     
@@ -82,17 +85,30 @@ for post in top_posts:
     i +=1
     
 print("Individual table is created")
+'''
 
 ### Append to top 30
-connection = sqlite3.connect('MSC/MSC.db')
-cursor = connection.cursor()
 top_posts = reddit.subreddit('worldnews').top(time_filter='day',limit=30)
 i = 1
 
-connection = sqlite3.connect('MSC/MSC.db')
+connection = sqlite3.connect('MSC.db')
 cursor = connection.cursor()
+def tables_in_sqlite_db(conn):
+    cursor = conn.execute("SELECT name FROM sqlite_master WHERE type='table';")
+    tables = [
+        v[0] for v in cursor.fetchall()
+        if v[0] != "sqlite_sequence"
+    ]
+    cursor.close()
+    return tables
+
+tables = tables_in_sqlite_db(connection)
+print(tables)
+
+'''
 sql = ('Select * from top30')
 z = pd.read_sql_query(sql,connection)
+print(z)
 
 for post in top_posts:
     atbilde =[]
@@ -118,3 +134,6 @@ for post in top_posts:
     i +=1
 
 print("Todays data is appended to top30")
+
+
+'''
