@@ -116,3 +116,27 @@ for post in top_posts:
     i +=1
 
 print("Todays data is appended to top30")
+
+
+
+import datetime as dt
+df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
+atbilde = []
+
+datums = input("datums")
+
+for i in df.date:
+    if str(datums) in  i:
+        print("The date is already filled in")
+        ans = input("Do you want overwrite Y/N?")
+atbilde.append(datums)        
+       
+for i in df.columns[1:]:
+    print(i)
+    i = input()
+    atbilde.append(i)
+    
+print(atbilde)
+
+df.loc[len(df)] = atbilde
+df.to_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv", index = False) 
