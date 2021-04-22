@@ -13,6 +13,17 @@ UTC to GMT+1
 Is_weekday
 Get data for all of march, should I do it from January?
 
+22/4
+Created basic for loop.
+Need to do automate right click- open new tab for some PDFs. They are not accebible in 
+
+PDF can be downloaded from
+https://d1wqtxts1xzle7.cloudfront.net/49511010/A_review_of_stock_market_prediction_with20161010-27090-16d1osj.pdf?1476128902=&response-content-disposition=inline%3B+filename%3DA_review_of_stock_market_prediction_with.pdf&Expires=1619098903&Signature=DxSSgzVi8jDkTdx9qOCzPzI127nzjQlpGlGpJ7s0uphEGVmCNU9NsmsPY1ztvcl9yUKh8vWHqHmDci~5toNNddcxEE1W9pubdAMDUYTthZuSwXQrKZg4YRtpJsHNrf-JOUJ22q8N~lnseqzb3YIwaxY1~jRXbzefygLlsg2HLqLD1SuG2zr9io6On8orSA2TKLfRapt6BB-NqjBDnj2pCggNkFTyeTVfdTtIgKLxO3ZT7EK4bsrYU6VmZfL2qgQEcZ9Qvgc4lQ8fcKsSFtAC6tpS6Pgx4PABBGtjj0dHTA6V-MEqDf5ovFJYBUpQeP6EKuH7yYC6j-idSEqeoxz5dw__&Key-Pair-Id=APKAJLOHF5GGSLRBV4ZA
+
+However, under inspection it is below.
+
+<a href="https://www.academia.edu/download/49511010/A_review_of_stock_market_prediction_with20161010-27090-16d1osj.pdf" data-clk="hl=en&amp;sa=T&amp;oi=gga&amp;ct=gga&amp;cd=0&amp;d=7543128795916916980&amp;ei=AW-BYNLDGPqB6rQPx7Kd6A8" data-clk-atid="9Nilt6yTrmgJ"><span class="gs_ctg2">[PDF]</span> academia.edu</a>
+
 21/04
 Submitted search phase.
 Google scholar have this cool option with PDF embedding.
