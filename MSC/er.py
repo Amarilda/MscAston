@@ -140,3 +140,4 @@ print(atbilde)
 
 df.loc[len(df)] = atbilde
 df.to_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv", index = False) 
+print("One day closer to year in pixels")

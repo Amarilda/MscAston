@@ -6,12 +6,30 @@ Delete double top 1
 DATA DICTIONARY
 Fix 20/03/2021 so it will appear as the date.
 What to do with cross posts.
-Add extra check so it would not let me create nedless new DBs. 
+Add extra check so it would not let me create needless new DBs. 
 
 FEATURE ENGINEERING
 UTC to GMT+1
 Is_weekday
 Get data for all of march, should I do it from January?
+
+21/04
+Submitted search phase.
+Google scholar have this cool option with PDF embedding.
+This is so cool. 
+ML which does ML on ML XD
+
+20/04
+Selenium
+Did I mentioned that python opens new test Chrome window. My face when it worked for the first time. 
+
+Did actually manage to figure out how to open chromedriver
+Still cant write into /usr/bin folder. Must love apple products
+----
+chrome_path = r'/Users/Edite/Downloads/chromedriver'
+driver = webdriver.Chrome(executable_path=chrome_path)
+driver.get('https://scholar.google.com')
+----
 
 16/4
 If .py is run from the MSC parent folder, full path need to be provided.
