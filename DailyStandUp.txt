@@ -4,7 +4,6 @@ What is the one thing which would bring the greatest improvement?
 STEPS
 Delete double top 1
 DATA DICTIONARY
-Fix 20/03/2021 so it will appear as the date.
 What to do with cross posts.
 Add extra check so it would not let me create needless new DBs. 
 
@@ -12,9 +11,15 @@ FEATURE ENGINEERING
 UTC to GMT+1
 Is_weekday
 Get data for all of march, should I do it from January?
+Pushshift???
+
+04/05
++20/03/2021 fixed, it should have been 20-03-2021.
++Fixed double entries for 20-04-2021.
++New data frame creted, with transposed news
 
 22/4
-Created basic for loop.
++Created basic for loop.
 Need to do automate right click- open new tab for some PDFs. They are not accebible in 
 
 PDF can be downloaded from
