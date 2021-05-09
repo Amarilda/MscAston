@@ -83,7 +83,7 @@ for post in top_posts:
 print("Individual table is created")
 
 ### Append to main
-connection = sqlite3.connect('MSC.db')
+connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
 
 sql = ("Select date(moment) as date, title from top30 where moment>date('now')")
