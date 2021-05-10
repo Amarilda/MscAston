@@ -137,6 +137,63 @@ connection.commit()
 connection.close()
 print("Appended to MAIN")
 
+connection = sqlite3.connect('MSC/MSC.db')
+cursor = connection.cursor()
+sql = ("Select max(date) as date from SP500")
+z = pd.read_sql_query(sql,connection)
+latest_date = z.date[0]
+
+##SP500
+url = "https://finance.yahoo.com/quote/%5EGSPC/history?p=%5EGSPC"
+r = requests.get(url)
+data = r.text
+soup = BeautifulSoup(data)
+
+answer = []
+if str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)) == latest_date:
+    print('Stop. This data point is already in the data base')
+else:
+    print('Lets get scraping')
+    answer.append(str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)))
+    answer = answer + [i.span.text for i in soup.find_all('td')[1:7]]
+    
+    columnnames = "'Date', 'SP500_Open', 'SP500_High', 'SP500_Low', 'SP500_Close','SP500_Adj_Close', 'SP500_Volume'"
+    insertintotable = '?,?,?,?,?,?,?'
+    
+    connection = sqlite3.connect('MSC/MSC.db')
+    cursor = connection.cursor()
+    sql2 = f'cursor.execute("insert INTO  SP500 ({columnnames}) VALUES ({insertintotable})", {answer})'
+    eval(sql2)
+    connection.commit()
+    connection.close()
+    print(f"{answer[0]} appended to SP500")
+    
+    
+    ## DJI
+    url = "https://finance.yahoo.com/quote/%5EDJI/history?p=%5EDJI"
+    r = requests.get(url)
+    data = r.text
+    soup = BeautifulSoup(data)
+    
+    answer = []
+    answer.append(str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)))
+    answer = answer + [i.span.text for i in soup.find_all('td')[1:7]]
+    
+    columnnames = "'date', 'SP500_Open', 'SP500_High', 'SP500_Low', 'SP500_Close','SP500_Adj_Close', 'SP500_Volume'"
+    insertintotable = '?,?,?,?,?,?,?'
+    
+    connection = sqlite3.connect('MSC/MSC.db')
+    cursor = connection.cursor()
+    sql2 = f'cursor.execute("insert INTO  SP500 ({columnnames}) VALUES ({insertintotable})", {answer})'
+    eval(sql2)
+    connection.commit()
+    connection.close()
+    print(f"{answer[0]} appended to DJI")
+
+
+
+
+
 import datetime as dt
 df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
 atbilde = []
