@@ -82,26 +82,6 @@ for post in top_posts:
     
 print("Individual table is created")
 
-### Append to main
-connection = sqlite3.connect('MSC/MSC.db')
-cursor = connection.cursor()
-
-sql = ("Select date(moment) as date, title from top30 where moment>date('now')")
-z = pd.read_sql_query(sql,connection)
-
-atbilde = []
-columnnames = "'date', 'top1', 'top2', 'top3', 'top4', 'top5', 'top6', 'top7', 'top8', 'top9', 'top10', 'top11', 'top12', 'top13', 'top14', 'top15', 'top16', 'top17', 'top18', 'top19', 'top20', 'top21', 'top22', 'top23', 'top24', 'top25', 'top26', 'top27', 'top28', 'top29', top30"
-insertintotable = '?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?'
-atbilde = [z.date[0]] +[i for i in  z.title]
-
-connection = sqlite3.connect('MSC/MSC.db')
-cursor = connection.cursor()
-sql2 = f'cursor.execute("insert INTO  main ({columnnames}) VALUES ({insertintotable})", {atbilde})'
-eval(sql2)
-connection.commit()
-connection.close()
-print("Appended to MAIN")
-
 ### Append to top 30
 top_posts = reddit.subreddit('worldnews').top(time_filter='day',limit=30)
 i = 1
@@ -136,6 +116,26 @@ for post in top_posts:
     i +=1
 
 print("Todays data is appended to top30")
+
+### Append to main
+connection = sqlite3.connect('MSC/MSC.db')
+cursor = connection.cursor()
+
+sql = ("Select date(moment) as date, title from top30 where moment>date('now')")
+z = pd.read_sql_query(sql,connection)
+
+atbilde = []
+columnnames = "'date', 'top1', 'top2', 'top3', 'top4', 'top5', 'top6', 'top7', 'top8', 'top9', 'top10', 'top11', 'top12', 'top13', 'top14', 'top15', 'top16', 'top17', 'top18', 'top19', 'top20', 'top21', 'top22', 'top23', 'top24', 'top25', 'top26', 'top27', 'top28', 'top29', top30"
+insertintotable = '?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?'
+atbilde = [z.date[0]] +[i for i in  z.title]
+
+connection = sqlite3.connect('MSC/MSC.db')
+cursor = connection.cursor()
+sql2 = f'cursor.execute("insert INTO  main ({columnnames}) VALUES ({insertintotable})", {atbilde})'
+eval(sql2)
+connection.commit()
+connection.close()
+print("Appended to MAIN")
 
 import datetime as dt
 df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
