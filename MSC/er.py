@@ -181,12 +181,12 @@ else:
     answer.append(str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)))
     answer = answer + [i.span.text for i in soup.find_all('td')[1:7]]
     
-    columnnames = "'date', 'SP500_Open', 'SP500_High', 'SP500_Low', 'SP500_Close','SP500_Adj_Close', 'SP500_Volume'"
+    columnnames = "'date', 'DJI_Open', 'DJI_High', 'DJI_Low', 'DJI_Close', 'DJI_Adj_Close','DJI_Volume'"
     insertintotable = '?,?,?,?,?,?,?'
     
     connection = sqlite3.connect('MSC/MSC.db')
     cursor = connection.cursor()
-    sql2 = f'cursor.execute("insert INTO  SP500 ({columnnames}) VALUES ({insertintotable})", {answer})'
+    sql2 = f'cursor.execute("insert INTO  DJI ({columnnames}) VALUES ({insertintotable})", {answer})'
     eval(sql2)
     connection.commit()
     connection.close()
