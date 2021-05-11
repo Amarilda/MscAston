@@ -53,7 +53,7 @@ for k in kolonas:
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
 a = f"cursor.executescript('DROP TABLE IF EXISTS {sodiena}')"
-b = f"cursor.execute('''CREATE TABLE {sodiena} ({createtable} )''')"
+b = f"cursor.execute('CREATE TABLE {sodiena} ({createtable} )')"
 
 eval(a)
 eval(b)
@@ -144,6 +144,8 @@ z = pd.read_sql_query(sql,connection)
 latest_date = z.date[0]
 
 ##SP500
+from bs4 import BeautifulSoup
+
 url = "https://finance.yahoo.com/quote/%5EGSPC/history?p=%5EGSPC"
 r = requests.get(url)
 data = r.text
@@ -173,7 +175,7 @@ else:
     url = "https://finance.yahoo.com/quote/%5EDJI/history?p=%5EDJI"
     r = requests.get(url)
     data = r.text
-    soup = BeautifulSoup(data)
+    soup = BeautifulSoup(data, features="lxml")
     
     answer = []
     answer.append(str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)))
@@ -189,10 +191,6 @@ else:
     connection.commit()
     connection.close()
     print(f"{answer[0]} appended to DJI")
-
-
-
-
 
 import datetime as dt
 df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
