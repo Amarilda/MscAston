@@ -13,10 +13,29 @@ Is_weekday
 Get data for all of march, should I do it from January?
 Pushshift???
 
+13/05/2021
+
++set up selenium to do old_reddit from https://www.redditsearch.io
++old_reddit transposed, added to the main
++main resorted and added anew. 
+
+old+reddit == main == resorted main
+
+12/05/2021
++old reddit headlines can be found at https://www.redditsearch.io
++beautifulsoup does not work
+
+10/05
++SP500/DJI to daily pipeline
+
+07/05
++SQL to merge main, DJI, SP500
+
 04/05
 +20/03/2021 fixed, it should have been 20-03-2021.
 +Fixed double entries for 20-04-2021.
-+New data frame creted, with transposed news
++New data frame created, with transposed news
++Sp500 /DJI
 
 22/4
 +Created basic for loop.
