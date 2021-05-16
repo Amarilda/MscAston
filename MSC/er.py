@@ -41,8 +41,7 @@ for k in kolonas:
     if z > 1:
         createtable+= str(k + " TEXT,")
         columnnames += str(f"'{k}', ")
-        insertintotable += str("?,")
-        
+        insertintotable += str("?,")        
     else:
         createtable+= str(k + " TEXT")
         columnnames += str(k)
@@ -149,7 +148,7 @@ from bs4 import BeautifulSoup
 url = "https://finance.yahoo.com/quote/%5EGSPC/history?p=%5EGSPC"
 r = requests.get(url)
 data = r.text
-soup = BeautifulSoup(data)
+soup = BeautifulSoup(data,features="lxml")
 
 answer = []
 if str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)) == latest_date:
@@ -196,7 +195,7 @@ import datetime as dt
 df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
 atbilde = []
 
-datums = input("datums")
+datums = datetime.datetime.now() - datetime.timedelta(days=1)
 
 for i in df.date:
     if str(datums) in  i:
