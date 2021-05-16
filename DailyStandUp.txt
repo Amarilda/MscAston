@@ -4,17 +4,27 @@ What is the one thing which would bring the greatest improvement?
 STEPS
 Delete double top 1
 DATA DICTIONARY
-What to do with cross posts.
-Add extra check so it would not let me create needless new DBs. 
+What to do with cross posts. 
+Migrate to Postgres
+Put it on docker
+
+FIX SWH, O, MAA, FLIR
 
 FEATURE ENGINEERING
 UTC to GMT+1
 Is_weekday
-Get data for all of march, should I do it from January?
-Pushshift???
++-
+
+16/05/2011
++Slick charts do not permit web-scraping, manual import for now. Don't think anybody will actually challenge SP500 component movements. 
++added DJI and SP500 table
++web scraped historical prices for SP500 component companies
+
+DIVIDENDS!!!!! Just go away. 
+Solved in 10 minutes, me accept this. 
+Mean while, struggled with table creation.
 
 13/05/2021
-
 +set up selenium to do old_reddit from https://www.redditsearch.io
 +old_reddit transposed, added to the main
 +main resorted and added anew. 
@@ -25,19 +35,19 @@ old+reddit == main == resorted main
 +old reddit headlines can be found at https://www.redditsearch.io
 +beautifulsoup does not work
 
-10/05
+10/05/2021
 +SP500/DJI to daily pipeline
 
-07/05
+07/05/2021
 +SQL to merge main, DJI, SP500
 
-04/05
+04/05/2021
 +20/03/2021 fixed, it should have been 20-03-2021.
 +Fixed double entries for 20-04-2021.
 +New data frame created, with transposed news
 +Sp500 /DJI
 
-22/4
+22/04/2021
 +Created basic for loop.
 Need to do automate right click- open new tab for some PDFs. They are not accebible in 
 
@@ -48,13 +58,13 @@ However, under inspection it is below.
 
 <a href="https://www.academia.edu/download/49511010/A_review_of_stock_market_prediction_with20161010-27090-16d1osj.pdf" data-clk="hl=en&amp;sa=T&amp;oi=gga&amp;ct=gga&amp;cd=0&amp;d=7543128795916916980&amp;ei=AW-BYNLDGPqB6rQPx7Kd6A8" data-clk-atid="9Nilt6yTrmgJ"><span class="gs_ctg2">[PDF]</span> academia.edu</a>
 
-21/04
+21/04/2021
 Submitted search phase.
 Google scholar have this cool option with PDF embedding.
 This is so cool. 
 ML which does ML on ML XD
 
-20/04
+20/04/2021
 Selenium
 Did I mentioned that python opens new test Chrome window. My face when it worked for the first time. 
 
@@ -66,7 +76,7 @@ driver = webdriver.Chrome(executable_path=chrome_path)
 driver.get('https://scholar.google.com')
 ----
 
-16/4
+16/04/2021
 If .py is run from the MSC parent folder, full path need to be provided.
 
 -----
@@ -74,7 +84,7 @@ connection = sqlite3.connect('MSC.db')
 connection = sqlite3.connect('MSC/MSC.db')
 -----
 
-15/4
+15/04/2021
 Converted automatic table creation into .py.
 -----
 python MSC/er.py
@@ -83,16 +93,16 @@ python MSC/er.py
 sqlite3.OperationalError: no such table: top30
 Need to get rid of top30 individual run and create ETL for all daily tables. 
 
-8/4
+08/04/2021
 Automatic daily table creation succeeded. 
 It went easier than I have anticipated.
-Next - put webscraping in .py and schedule with scheduler.
+Next - put web-scraping in .py and schedule with scheduler.
 
-7/4
+07/04/2021
 Got string working for creating the daily table depending on how many different variables are present in the daily scrape.
 Need to fix an actual injection part.
 Seems like top posts should be called again.
-Did get more working then I have planned this morning. 
+Did get more working than I have planned this morning. 
 No Nils though. 
 
 05/04/2021
