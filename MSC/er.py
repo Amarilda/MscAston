@@ -120,7 +120,7 @@ print("Todays data is appended to top30")
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
 
-sql = ("Select date(moment) as date, title from top30 where moment>date('now')")
+sql = (f"Select date(moment) as date, title from {sodiena}")
 z = pd.read_sql_query(sql,connection)
 
 atbilde = []
@@ -138,7 +138,7 @@ print("Appended to MAIN")
 
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
-sql = ("Select max(date) as date from SP500")
+sql = ("Select max(date) as date from prices")
 z = pd.read_sql_query(sql,connection)
 latest_date = z.date[0]
 
@@ -154,42 +154,30 @@ answer = []
 if str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)) == latest_date:
     print('Stop. This data point is already in the data base')
 else:
-    print('Lets get scraping')
-    answer.append(str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)))
-    answer = answer + [i.span.text for i in soup.find_all('td')[1:7]]
-    
-    columnnames = "'Date', 'SP500_Open', 'SP500_High', 'SP500_Low', 'SP500_Close','SP500_Adj_Close', 'SP500_Volume'"
-    insertintotable = '?,?,?,?,?,?,?'
-    
-    connection = sqlite3.connect('MSC/MSC.db')
+    # for symbol in df
+    connection = sqlite3.connect('MSC.db')
     cursor = connection.cursor()
-    sql2 = f'cursor.execute("insert INTO  SP500 ({columnnames}) VALUES ({insertintotable})", {answer})'
-    eval(sql2)
-    connection.commit()
-    connection.close()
-    print(f"{answer[0]} appended to SP500")
+    sql = ("Select * from SP500_companies")
+    df = pd.read_sql_query(sql,connection)
     
+    columnnames = "'date', 'open', 'high', 'low', 'close', 'adj_close','volume', 'symbol'"
+    insertintotable = '?,?,?,?,?,?,?,?'
     
-    ## DJI
-    url = "https://finance.yahoo.com/quote/%5EDJI/history?p=%5EDJI"
-    r = requests.get(url)
-    data = r.text
-    soup = BeautifulSoup(data, features="lxml")
-    
-    answer = []
-    answer.append(str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)))
-    answer = answer + [i.span.text for i in soup.find_all('td')[1:7]]
-    
-    columnnames = "'date', 'DJI_Open', 'DJI_High', 'DJI_Low', 'DJI_Close', 'DJI_Adj_Close','DJI_Volume'"
-    insertintotable = '?,?,?,?,?,?,?'
-    
-    connection = sqlite3.connect('MSC/MSC.db')
-    cursor = connection.cursor()
-    sql2 = f'cursor.execute("insert INTO  DJI ({columnnames}) VALUES ({insertintotable})", {answer})'
-    eval(sql2)
-    connection.commit()
-    connection.close()
-    print(f"{answer[0]} appended to DJI")
+    for i in df.Symbol:
+        r = requests.get(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
+        print(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
+        data = r.text
+        soup = BeautifulSoup(data, features="lxml")
+        answer.append(str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)))
+        answer = answer + [i.span.text for i in soup.find_all('td')[1:7]]
+        
+        connection = sqlite3.connect('MSC/MSC.db')
+        cursor = connection.cursor()
+        sql2 = f'cursor.execute("insert INTO  SP500 ({columnnames}) VALUES ({insertintotable})", {answer})'
+        eval(sql2)
+        connection.commit()
+        connection.close()
+
 
 import datetime as dt
 df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
