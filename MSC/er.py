@@ -4,7 +4,7 @@ import datetime
 import pandas as pd
 import sqlite3
 import praw
-
+'''
 from credentials import credentials
 
 client_id, client_secret,password, user_agent, username = credentials
@@ -16,7 +16,6 @@ reddit = praw.Reddit(
     user_agent=user_agent,
     username=username,
 )
-
 print(reddit.user.me())
 
 ###Individual table
@@ -135,7 +134,8 @@ eval(sql2)
 connection.commit()
 connection.close()
 print("Appended to MAIN")
-
+'''
+#Yahoo finance, get the last date in the DB
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
 sql = ("Select max(date) as date from prices")
@@ -155,9 +155,9 @@ if str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)) 
     print('Stop. This data point is already in the data base')
 else:
     # for symbol in df
-    connection = sqlite3.connect('MSC.db')
+    connection = sqlite3.connect('MSC/MSC.db')
     cursor = connection.cursor()
-    sql = ("Select * from SP500_companies")
+    sql = ("Select * from prices")
     df = pd.read_sql_query(sql,connection)
     
     columnnames = "'date', 'open', 'high', 'low', 'close', 'adj_close','volume', 'symbol'"
@@ -173,7 +173,7 @@ else:
         
         connection = sqlite3.connect('MSC/MSC.db')
         cursor = connection.cursor()
-        sql2 = f'cursor.execute("insert INTO  SP500 ({columnnames}) VALUES ({insertintotable})", {answer})'
+        sql2 = f'cursor.execute("insert INTO  prices ({columnnames}) VALUES ({insertintotable})", {answer})'
         eval(sql2)
         connection.commit()
         connection.close()
