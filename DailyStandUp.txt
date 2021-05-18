@@ -8,21 +8,19 @@ What to do with cross posts.
 Migrate to Postgres
 Put it on docker
 
-FIX SWH, O, MAA, FLIR
-FIX APPLE WITH MULTIPLE PRICES
-
 FEATURE ENGINEERING
 UTC to GMT+1
-Is_weekday
 +-
 
 18/05/2021
-+er.py failed on daily price injection.
++er.py failed on the daily price injection.
 Yahoo added a blank line with todays prices
 Some companies have dividends paid out, 17/05/2021 officially a dividend day.
 
-if date, symbol in the prices - pass
-if line blank - pass
++if date, symbol in the prices - pass
++if line blank - pass
++prices dropped, select distinct, put back
+FLIR merged with another company
 
 16/05/2021
 --16/05/2011 HA! I wish I was web scraping in 2011. 

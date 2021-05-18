@@ -109,19 +109,15 @@ for post in top_posts:
     sql2 = ("insert INTO top30('moment', 'daily_rank', 'comment_limit', 'comment_sort', '_reddit', 'approved_at_utc', 'subreddit', 'selftext', 'author_fullname', 'saved', 'mod_reason_title', 'gilded', 'clicked', 'title', 'link_flair_richtext', 'subreddit_name_prefixed', 'hidden', 'pwls', 'link_flair_css_class', 'downs', 'top_awarded_type', 'hide_score', 'name', 'quarantine', 'link_flair_text_color', 'upvote_ratio', 'author_flair_background_color', 'subreddit_type', 'ups', 'total_awards_received', 'media_embed', 'author_flair_template_id', 'is_original_content', 'user_reports', 'secure_media', 'is_reddit_media_domain', 'is_meta', 'category', 'secure_media_embed', 'link_flair_text', 'can_mod_post', 'score', 'approved_by', 'author_premium', 'thumbnail', 'edited', 'author_flair_css_class', 'author_flair_richtext', 'gildings', 'content_categories', 'is_self', 'mod_note', 'created', 'link_flair_type', 'wls', 'removed_by_category', 'banned_by', 'author_flair_type', 'domain', 'allow_live_comments', 'selftext_html', 'likes', 'suggested_sort', 'banned_at_utc', 'url_overridden_by_dest', 'view_count', 'archived', 'no_follow', 'is_crosspostable', 'pinned', 'over_18', 'all_awardings', 'awarders', 'media_only', 'can_gild', 'spoiler', 'locked', 'author_flair_text', 'treatment_tags', 'visited', 'removed_by', 'num_reports', 'distinguished', 'subreddit_id', 'mod_reason_by', 'removal_reason', 'link_flair_background_color', 'id', 'is_robot_indexable', 'report_reasons', 'author', 'discussion_type', 'num_comments', 'send_replies', 'whitelist_status', 'contest_mode', 'mod_reports', 'author_patreon_flair', 'author_flair_text_color', 'permalink', 'parent_whitelist_status', 'stickied', 'url', 'subreddit_subscribers', 'created_utc', 'num_crossposts', 'media', 'is_video', '_fetched', '_comments_by_id', 'author_cakeday', 'flair', 'link_flair_template_id', 'num_duplicates', 'post_hint', 'preview', 'thumbnail_height', 'thumbnail_width','_comments') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
     cursor.execute(sql2, atbilde)          
     connection.commit()
-    connection.close()
-    
+    connection.close()    
     i +=1
-
 print("Todays data is appended to top30")
 
 ### Append to main
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
-
 sql = (f"Select date(moment) as date, title from {sodiena}")
 z = pd.read_sql_query(sql,connection)
-
 atbilde = []
 columnnames = "'date', 'top1', 'top2', 'top3', 'top4', 'top5', 'top6', 'top7', 'top8', 'top9', 'top10', 'top11', 'top12', 'top13', 'top14', 'top15', 'top16', 'top17', 'top18', 'top19', 'top20', 'top21', 'top22', 'top23', 'top24', 'top25', 'top26', 'top27', 'top28', 'top29', top30"
 insertintotable = '?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?'
@@ -134,59 +130,52 @@ eval(sql2)
 connection.commit()
 connection.close()
 print("Appended to MAIN")
-'''
 
-
-#Yahoo finance, get the last date in the DB
+#for symbol in df
+no_financials = "'BRK.B', 'BF.B', 'FLIR'"
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
-sql = ("Select max(date) as date from prices")
+sql = (f"Select * from SP500_companies where symbol not in ({no_financials})")
+df = pd.read_sql_query(sql,connection)
+connection.commit()
+connection.close()
+
+connection = sqlite3.connect('MSC/MSC.db')
+cursor = connection.cursor()
+sql = ("Select * from prices order by date desc")
 z = pd.read_sql_query(sql,connection)
-latest_date = z.date[0]
+connection.commit()
+connection.close()
 
-##SP500
-from bs4 import BeautifulSoup
+columnnames = "'date', 'open', 'high', 'low', 'close', 'adj_close','volume', 'symbol'"
+insertintotable = '?,?,?,?,?,?,?,?
 
-url = "https://finance.yahoo.com/quote/%5EGSPC/history?p=%5EGSPC"
-r = requests.get(url)
-data = r.text
-soup = BeautifulSoup(data,features="lxml")
-
-if str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)) ==100:
-#latest_date:
-    print('This data point is already in the data base')
-else:
-    # for symbol in df
-    connection = sqlite3.connect('MSC/MSC.db')
-    cursor = connection.cursor()
-    sql = ("Select * from SP500_companies")
-    df = pd.read_sql_query(sql,connection)
+for i in df.Symbol:
+    r = requests.get(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
+    print(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
+    data = r.text
+    soup = BeautifulSoup(data, features="lxml")
     
-    columnnames = "'date', 'open', 'high', 'low', 'close', 'adj_close','volume', 'symbol'"
-    insertintotable = '?,?,?,?,?,?,?,?'
-    
-    for i in df.Symbol:
-        
+    for j in range (0, 4):
+        if soup.find_all('td')[1+j*7].span == None:
+            pass
+        else:
+            answer = []
+            if pd.to_datetime(soup.find_all('td')[j*7].text, infer_datetime_format=True) > pd.to_datetime(z.date[z.symbol == i].iloc[0]):
+                answer.append(str(pd.to_datetime(soup.find_all('td')[j*7].text, infer_datetime_format=True)))
+                answer = answer + [i.span.text for i in soup.find_all('td')[j*7+1: j*7+7]] + [i]
+                print(answer)
 
-        answer = []
-        r = requests.get(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
-        print(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
-        data = r.text
-        soup = BeautifulSoup(data, features="lxml")
-
-
-        answer.append(str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)))
-        answer = answer + [i.span.text for i in soup.find_all('td')[1:7]] + [i]
-        print(i)
-
-        print(answer)
-        
-        connection = sqlite3.connect('MSC/MSC.db')
-        cursor = connection.cursor()
-        sql2 = f'cursor.execute("insert INTO  prices ({columnnames}) VALUES ({insertintotable})", {answer})'
-        eval(sql2)
-        connection.commit()
-        connection.close()
+                connection = sqlite3.connect('MSC.db')
+                cursor = connection.cursor()
+                sql2 = f'cursor.execute("insert INTO  prices ({columnnames}) VALUES ({insertintotable})", {answer})'
+                eval(sql2)
+                connection.commit()
+                connection.close()
+            else:
+                pass
+            
+print('Price injection done')
 
 import datetime as dt
 df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
