@@ -4,7 +4,7 @@ import datetime
 import pandas as pd
 import sqlite3
 import praw
-'''
+
 from credentials import credentials
 
 client_id, client_secret,password, user_agent, username = credentials
@@ -135,6 +135,8 @@ connection.commit()
 connection.close()
 print("Appended to MAIN")
 '''
+
+
 #Yahoo finance, get the last date in the DB
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
@@ -150,26 +152,34 @@ r = requests.get(url)
 data = r.text
 soup = BeautifulSoup(data,features="lxml")
 
-answer = []
-if str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)) == latest_date:
-    print('Stop. This data point is already in the data base')
+if str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)) ==100:
+#latest_date:
+    print('This data point is already in the data base')
 else:
     # for symbol in df
     connection = sqlite3.connect('MSC/MSC.db')
     cursor = connection.cursor()
-    sql = ("Select * from prices")
+    sql = ("Select * from SP500_companies")
     df = pd.read_sql_query(sql,connection)
     
     columnnames = "'date', 'open', 'high', 'low', 'close', 'adj_close','volume', 'symbol'"
     insertintotable = '?,?,?,?,?,?,?,?'
     
     for i in df.Symbol:
+        
+
+        answer = []
         r = requests.get(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
         print(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
         data = r.text
         soup = BeautifulSoup(data, features="lxml")
+
+
         answer.append(str(pd.to_datetime(soup.find_all('td')[0].text, infer_datetime_format=True)))
-        answer = answer + [i.span.text for i in soup.find_all('td')[1:7]]
+        answer = answer + [i.span.text for i in soup.find_all('td')[1:7]] + [i]
+        print(i)
+
+        print(answer)
         
         connection = sqlite3.connect('MSC/MSC.db')
         cursor = connection.cursor()
@@ -177,7 +187,6 @@ else:
         eval(sql2)
         connection.commit()
         connection.close()
-
 
 import datetime as dt
 df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")

@@ -9,13 +9,23 @@ Migrate to Postgres
 Put it on docker
 
 FIX SWH, O, MAA, FLIR
+FIX APPLE WITH MULTIPLE PRICES
 
 FEATURE ENGINEERING
 UTC to GMT+1
 Is_weekday
 +-
 
-16/05/2011
+18/05/2021
++er.py failed on daily price injection.
+Yahoo added a blank line with todays prices
+Some companies have dividends paid out, 17/05/2021 officially a dividend day.
+
+if date, symbol in the prices - pass
+if line blank - pass
+
+16/05/2021
+--16/05/2011 HA! I wish I was web scraping in 2011. 
 +Slick charts do not permit web-scraping, manual import for now. Don't think anybody will actually challenge SP500 component movements. 
 +added DJI and SP500 table
 +web scraped historical prices for SP500 component companies
