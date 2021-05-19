@@ -12,6 +12,13 @@ FEATURE ENGINEERING
 UTC to GMT+1
 +-
 
+need to add only one entry per date
+chech if 2nd item is text, then +2
+based of now() figure out the last date is expected to be full with data
+
+19/05/2021
++er.py not done fixing
+
 18/05/2021
 +er.py failed on the daily price injection.
 Yahoo added a blank line with todays prices
@@ -21,6 +28,8 @@ Some companies have dividends paid out, 17/05/2021 officially a dividend day.
 +if line blank - pass
 +prices dropped, select distinct, put back
 FLIR merged with another company
+
+WALLSTREET BETS SENTIMENT XXXD
 
 16/05/2021
 --16/05/2011 HA! I wish I was web scraping in 2011. 
