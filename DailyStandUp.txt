@@ -12,12 +12,16 @@ FEATURE ENGINEERING
 UTC to GMT+1
 +-
 
-need to add only one entry per date
-chech if 2nd item is text, then +2
-based of now() figure out the last date is expected to be full with data
+20/05/2021
+Daily scrape fixed after failing. 
+hell yeah. 
 
 19/05/2021
 +er.py not done fixing
+
+need to add only one entry per date
+chech if 2nd item is text, then +2
+based of now() figure out the last date is expected to be full with data
 
 18/05/2021
 +er.py failed on the daily price injection.
