@@ -76,43 +76,6 @@ for post in top_posts:
     i +=1    
 print("Individual table is created")
 
-'''
-### Append to top 30
-top_posts = reddit.subreddit('worldnews').top(time_filter='day',limit=30)
-i = 1
-
-connection = sqlite3.connect('MSC/MSC.db')
-cursor = connection.cursor()
-sql = ('Select * from top30')
-z = pd.read_sql_query(sql,connection)
-
-for post in top_posts:
-    answer =[]
-    answer.append(str(datetime.datetime.now()))
-    answer.append(str(i))
-    for j in z.columns[2:]:
-        try:
-            answer.append(str(eval("post."+j)))
-        except:
-            answer.append("")
-
-    for m in vars(post):
-        if m not in z.columns[2:]:
-            print(m)
-    
-    connection = sqlite3.connect('MSC/MSC.db')
-    cursor = connection.cursor()
-    sql2 = ("insert INTO top30('moment', 'daily_rank', 'comment_limit', 'comment_sort', '_reddit', 'approved_at_utc', 'subreddit', 'selftext', 'author_fullname', 'saved', 'mod_reason_title', 'gilded', 'clicked', 'title', 'link_flair_richtext', 'subreddit_name_prefixed', 'hidden', 'pwls', 'link_flair_css_class', 'downs', 'top_awarded_type', 'hide_score', 'name', 'quarantine', 'link_flair_text_color', 'upvote_ratio', 'author_flair_background_color', 'subreddit_type', 'ups', 'total_awards_received', 'media_embed', 'author_flair_template_id', 'is_original_content', 'user_reports', 'secure_media', 'is_reddit_media_domain', 'is_meta', 'category', 'secure_media_embed', 'link_flair_text', 'can_mod_post', 'score', 'approved_by', 'author_premium', 'thumbnail', 'edited', 'author_flair_css_class', 'author_flair_richtext', 'gildings', 'content_categories', 'is_self', 'mod_note', 'created', 'link_flair_type', 'wls', 'removed_by_category', 'banned_by', 'author_flair_type', 'domain', 'allow_live_comments', 'selftext_html', 'likes', 'suggested_sort', 'banned_at_utc', 'url_overridden_by_dest', 'view_count', 'archived', 'no_follow', 'is_crosspostable', 'pinned', 'over_18', 'all_awardings', 'awarders', 'media_only', 'can_gild', 'spoiler', 'locked', 'author_flair_text', 'treatment_tags', 'visited', 'removed_by', 'num_reports', 'distinguished', 'subreddit_id', 'mod_reason_by', 'removal_reason', 'link_flair_background_color', 'id', 'is_robot_indexable', 'report_reasons', 'author', 'discussion_type', 'num_comments', 'send_replies', 'whitelist_status', 'contest_mode', 'mod_reports', 'author_patreon_flair', 'author_flair_text_color', 'permalink', 'parent_whitelist_status', 'stickied', 'url', 'subreddit_subscribers', 'created_utc', 'num_crossposts', 'media', 'is_video', '_fetched', '_comments_by_id', 'author_cakeday', 'flair', 'link_flair_template_id', 'num_duplicates', 'post_hint', 'preview', 'thumbnail_height', 'thumbnail_width','_comments') VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-    cursor.execute(sql2, answer)          
-    connection.commit()
-    connection.close()    
-    i +=1
-print("Todays data is appended to top30")
-
-----delete bfore this
-'''
-
-
 ### Append to main. aka transposed top30
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
@@ -137,7 +100,7 @@ cursor = connection.cursor()
 
 sql = (f'''
 Select symbol from SP500_companies 
-where symbol not in (select distinct symbol from prices where date == "2021-05-20 00:00:00")
+where symbol not in (select distinct symbol from prices where date == "2021-05-21 00:00:00")
 and  symbol not in ('BRK.B', 'BF.B', 'FLIR')'''
     )
 df = pd.read_sql_query(sql,connection)
@@ -154,26 +117,22 @@ insertintotable = '?,?,?,?,?,?,?,?'
 
 for i in df.Symbol:
     r = requests.get(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
-    print(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
     data = r.text
     soup = BeautifulSoup(data, features="lxml")
     
     for j in range (0, len(soup.find_all('td'))):
         try:
             if (type(pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True)) == pd._libs.tslibs.timestamps.Timestamp) == True and isinstance(locale.atof(soup.find_all('td')[j+1].text), (int, float, complex)) == True and pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True) > pd.to_datetime(z.date[z.symbol == i].iloc[0]):
-                #print(pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True))
                 answer = []
                 answer.append(str(pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True)))
                 answer = answer + [i.span.text for i in soup.find_all('td')[j+1: j+7]] + [i]
                 print(answer)
-
                 connection = sqlite3.connect('MSC/MSC.db')
                 cursor = connection.cursor()
                 sql2 = f'cursor.execute("insert INTO  prices ({columnnames}) VALUES ({insertintotable})", {answer})'
                 eval(sql2)
                 connection.commit()
                 connection.close()
-
             else: pass
         except:pass            
 print('Price injection done')
