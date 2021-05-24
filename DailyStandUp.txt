@@ -12,6 +12,10 @@ FEATURE ENGINEERING
 UTC to GMT+1
 +-
 
+Add check for daily table
+Add check for main
+Add wallstreets bets to the er.py
+
 20/05/2021
 Daily scrape fixed after failing. 
 hell yeah. 
