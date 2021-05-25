@@ -14,7 +14,13 @@ UTC to GMT+1
 
 Add check for daily table
 Add check for main
-Add wallstreets bets to the er.py
+
+25/05/2021
+Daily scrape only failed of missing data.py
+
+24/05/2021
+Wallstreetbets goes to database
+Wallstreets (beets) bets sentiments and comments added to er.py
 
 20/05/2021
 Daily scrape fixed after failing. 

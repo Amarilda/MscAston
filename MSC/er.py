@@ -10,6 +10,7 @@ import locale
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from credentials import credentials
+from data import *
 
 client_id, client_secret,password, user_agent, username = credentials
 
@@ -100,9 +101,11 @@ connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
 
 sql = (f'''
+'''
 Select symbol from SP500_companies 
 where symbol not in (select distinct symbol from prices where date == "2021-05-21 00:00:00")
 and  symbol not in ('BRK.B', 'BF.B', 'FLIR')'''
+'''
     )
 df = pd.read_sql_query(sql,connection)
 
