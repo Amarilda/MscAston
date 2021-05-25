@@ -101,10 +101,9 @@ connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
 
 sql = (f'''
-'''
 Select symbol from SP500_companies 
-where symbol not in (select distinct symbol from prices where date == "2021-05-21 00:00:00")
-and  symbol not in ('BRK.B', 'BF.B', 'FLIR')'''
+where symbol not in (select distinct symbol from prices where date == "2021-05-25 00:00:00")
+--and  symbol not in ('BRK.B', 'BF.B', 'FLIR')
 '''
     )
 df = pd.read_sql_query(sql,connection)
@@ -121,6 +120,7 @@ insertintotable = '?,?,?,?,?,?,?,?'
 
 for i in df.Symbol:
     r = requests.get(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
+    print(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
     data = r.text
     soup = BeautifulSoup(data, features="lxml")
     
@@ -287,5 +287,4 @@ for symbol in picks_sentiment:
     for key in score:
         scores[symbol][key] = scores[symbol][key] / symbols[symbol]
         scores[symbol][key]  = "{pol:.3f}".format(pol=scores[symbol][key])
-
 print("wb_sentiment done")
