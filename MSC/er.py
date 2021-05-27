@@ -102,7 +102,7 @@ cursor = connection.cursor()
 
 sql = (f'''
 Select symbol from SP500_companies 
-where symbol not in (select distinct symbol from prices where date == "2021-05-25 00:00:00")
+where symbol not in (select distinct symbol from prices where date == "2021-05-26 00:00:00")
 --and  symbol not in ('BRK.B', 'BF.B', 'FLIR')
 '''
     )
