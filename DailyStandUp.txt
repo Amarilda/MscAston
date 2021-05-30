@@ -12,8 +12,19 @@ FEATURE ENGINEERING
 UTC to GMT+1
 +-
 
+ADD AUTOMATED DATE for yahoo finance
 Add check for daily table
 Add check for main
+wb_comments duplicates
+
+30/05/2021
+Next time need to push data from both computers.
+Holiday Edite... and I thought you have it all figured out.
+
+
+28/05/2021
+There will be no Wallstreets bets for this day.
+Serverless this until next holiday.
 
 25/05/2021
 Daily scrape only failed of missing data.py

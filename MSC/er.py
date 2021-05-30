@@ -102,8 +102,8 @@ cursor = connection.cursor()
 
 sql = (f'''
 Select symbol from SP500_companies 
-where symbol not in (select distinct symbol from prices where date == "2021-05-27 00:00:00")
---and  symbol not in ('BRK.B', 'BF.B', 'FLIR')
+where symbol not in (select distinct symbol from prices where date == "2021-05-28 00:00:00")
+and  symbol not in ('BRK.B', 'BF.B', 'FLIR')
 '''
     )
 df = pd.read_sql_query(sql,connection)
