@@ -100,12 +100,19 @@ print("Appended to MAIN")
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
 
+def last_work_day():
+    for i in range(1,7):
+        if (datetime.date.today()-datetime.timedelta(days=i)).weekday()< 6:
+            m = (datetime.date.today()-datetime.timedelta(days=i))
+            break
+    
+    return m.strftime('%Y-%m-%d %H:%M:%S')
+datums = last_work_day()
+
 sql = (f'''
 Select symbol from SP500_companies 
-where symbol not in (select distinct symbol from prices where date == "2021-05-28 00:00:00")
-and  symbol not in ('BRK.B', 'BF.B', 'FLIR')
-'''
-    )
+where symbol not in (select distinct symbol from prices where date == "{datums}")
+and  symbol not in ('BRK.B', 'BF.B', 'FLIR')''')
 df = pd.read_sql_query(sql,connection)
 
 connection = sqlite3.connect('MSC/MSC.db')
@@ -173,7 +180,8 @@ uniqueCmt = True                # allow one comment per author per symbol
 ignoreAuthP = {'example'}       # authors to ignore for posts 
 ignoreAuthC = {'example'}       # authors to ignore for comment 
 upvoteRatio = 0.70         # upvote ratio for post to be considered, 0.70 = 70%
-ups = 20       # define # of upvotes, post is considered if upvotes exceed this #
+ups = 20       # define # of upvotes, post is considered if upvotes exceday
+#
 limit = 500     # define the limit, comments 'replace more' limit
 upvotes = 2     # define # of upvotes, comment is considered if upvotes exceed this #
 
