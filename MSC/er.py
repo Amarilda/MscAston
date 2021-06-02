@@ -148,22 +148,6 @@ for i in df.Symbol:
         except:pass            
 print('Price injection done')
 
-import datetime as dt
-df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
-answer = []
-
-datums = datetime.datetime.now() - datetime.timedelta(days=1)
-answer.append(datums)        
-       
-for i in df.columns[1:]:
-    print(i)
-    i = input()
-    answer.append(i)
-    
-df.loc[len(df)] = answer
-df.to_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv", index = False) 
-print("One day closer to year in pixels")
-
 print("Starting Wallstreets bets")
 #Getting tickers for sp500
 connection = sqlite3.connect('MSC/MSC.db')
@@ -171,7 +155,6 @@ cursor = connection.cursor()
 sql = ("Select symbol from SP500_companies")
 df = pd.read_sql_query(sql,connection)
 us = df['Symbol'].to_list()
-
 # set the program parameters
 subs = ['wallstreetbets' ]     # sub-reddit to search
 post_flairs = {'Daily Discussion', 'Weekend Discussion', 'Discussion'}    # posts flairs to search || None flair is automatically considered
@@ -296,3 +279,20 @@ for symbol in picks_sentiment:
         scores[symbol][key] = scores[symbol][key] / symbols[symbol]
         scores[symbol][key]  = "{pol:.3f}".format(pol=scores[symbol][key])
 print("wb_sentiment done")
+
+
+import datetime as dt
+df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
+answer = []
+
+datums = datetime.datetime.now() - datetime.timedelta(days=1)
+answer.append(datums)        
+       
+for i in df.columns[1:]:
+    print(i)
+    i = input()
+    answer.append(i)
+    
+df.loc[len(df)] = answer
+df.to_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv", index = False) 
+print("One day closer to year in pixels")
