@@ -255,6 +255,9 @@ z = pd.read_sql_query(sql,connection)
 connection.commit()
 connection.close()
 
+import locale
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+
 columnnames = "'date', 'open', 'high', 'low', 'close', 'adj_close','volume', 'symbol'"
 insertintotable = '?,?,?,?,?,?,?,?'
 
@@ -263,24 +266,31 @@ for i in df.Symbol:
     print(f'https://finance.yahoo.com/quote/{i}/history?p={i}')
     data = r.text
     soup = BeautifulSoup(data, features="lxml")
-    
+     
     for j in range (0, len(soup.find_all('td'))):
-        try:
-            if (type(pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True)) == pd._libs.tslibs.timestamps.Timestamp) == True and isinstance(locale.atof(soup.find_all('td')[j+1].text), (int, float, complex)) == True and pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True) > pd.to_datetime(z.date[z.symbol == i].iloc[0]):
-                answer = []
-                answer.append(str(pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True)))
-                answer = answer + [i.span.text for i in soup.find_all('td')[j+1: j+7]] + [i]
-                print(answer)
-                connection = sqlite3.connect('MSC/MSC.db')
-                cursor = connection.cursor()
-                sql2 = f'cursor.execute("insert INTO  prices ({columnnames}) VALUES ({insertintotable})", {answer})'
-                eval(sql2)
-                connection.commit()
-                connection.close()
-            else: pass
-        except:pass            
+    #if the last working day in the db, do nothing
+        if pd.to_datetime(datums) == pd.to_datetime(z.date[z.symbol == i].iloc[0]):
+            break
+        else:
+            try:
+                #if 1st field is a date, 2nd is a number and yahoodate > last date in db
+                if (type(pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True)) == pd._libs.tslibs.timestamps.Timestamp) == True \
+                and isinstance(locale.atof(soup.find_all('td')[j+1].text), (int, float, complex)) == True \
+                and pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True) == pd.to_datetime(z.date[z.symbol == i].iloc[0]):
+                    answer = []
+                    answer.append(str(pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True)))
+                    answer = answer + [i.span.text for i in soup.find_all('td')[j+1: j+7]] + [i]
+                    print(answer)
+                    connection = sqlite3.connect('MSC/MSC.db')
+                    cursor = connection.cursor()
+                    sql2 = f'cursor.execute("insert INTO  prices ({columnnames}) VALUES ({insertintotable})", {answer})'
+                    eval(sql2)
+                    connection.commit()
+                    connection.close()
+                    break
+                else: pass
+            except:pass                      
 print('Price injection done')
-
 
 import datetime as dt
 df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
