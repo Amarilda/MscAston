@@ -16,6 +16,10 @@ Add check for daily table
 Add check for main
 wb_comments duplicates
 
+06/06/2021
+Python do start counting at 0.
+if (datetime.date.today()-datetime.timedelta(days=i)).weekday()< 5:
+
 05/06/2021
 If last working day == last in db:
 pass

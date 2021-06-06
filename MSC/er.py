@@ -235,7 +235,7 @@ cursor = connection.cursor()
 
 def last_work_day():
     for i in range(1,7):
-        if (datetime.date.today()-datetime.timedelta(days=i)).weekday()< 6:
+        if (datetime.date.today()-datetime.timedelta(days=i)).weekday()< 5:
             m = (datetime.date.today()-datetime.timedelta(days=i))
             break
     
