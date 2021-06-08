@@ -11,7 +11,7 @@ locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from credentials import credentials
 from data import *
-
+'''
 client_id, client_secret,password, user_agent, username = credentials
 
 reddit = praw.Reddit(
@@ -51,10 +51,10 @@ for k in kolonas:
 #Drop and create the todays table
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
-a = f"cursor.executescript('DROP TABLE IF EXISTS {thisday}')"
-b = f"cursor.execute('CREATE TABLE {thisday} ({createtable} )')"
+#a = f"cursor.executescript('DROP TABLE IF EXISTS {thisday}')"
+a = f"cursor.execute('CREATE TABLE if not exists {thisday} ({createtable} )')"
 eval(a)
-eval(b)
+#eval(b)
     
 #An actual webscraping
 top_posts = reddit.subreddit('worldnews').top(time_filter='day',limit=30)
@@ -228,7 +228,7 @@ for symbol in picks_sentiment:
         scores[symbol][key] = scores[symbol][key] / symbols[symbol]
         scores[symbol][key]  = "{pol:.3f}".format(pol=scores[symbol][key])
 print("wb_sentiment done")
-
+'''
 #for symbol in df
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
@@ -276,7 +276,7 @@ for i in df.Symbol:
                 #if 1st field is a date, 2nd is a number and yahoodate > last date in db
                 if (type(pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True)) == pd._libs.tslibs.timestamps.Timestamp) == True \
                 and isinstance(locale.atof(soup.find_all('td')[j+1].text), (int, float, complex)) == True \
-                and pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True) == pd.to_datetime(z.date[z.symbol == i].iloc[0]):
+                and pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True) > pd.to_datetime(z.date[z.symbol == i].iloc[0]):
                     answer = []
                     answer.append(str(pd.to_datetime(soup.find_all('td')[j].text,infer_datetime_format=True)))
                     answer = answer + [i.span.text for i in soup.find_all('td')[j+1: j+7]] + [i]
