@@ -175,10 +175,8 @@ for submission in hot_python:
                                 a_comments[word] = [comment.body]
                                 count += 1   
         except Exception as e: print(e)
-
 # sorts the dictionary
 symbols = dict(sorted(tickers.items(), key=lambda item: item[1], reverse = True))
-
 print("wb_comments done")
 
 top_picks = list(symbols.keys())
