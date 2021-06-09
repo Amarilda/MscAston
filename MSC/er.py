@@ -11,7 +11,7 @@ locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
 from credentials import credentials
 from data import *
-'''
+
 client_id, client_secret,password, user_agent, username = credentials
 
 reddit = praw.Reddit(
@@ -228,7 +228,7 @@ for symbol in picks_sentiment:
         scores[symbol][key] = scores[symbol][key] / symbols[symbol]
         scores[symbol][key]  = "{pol:.3f}".format(pol=scores[symbol][key])
 print("wb_sentiment done")
-'''
+
 #for symbol in df
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
