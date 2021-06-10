@@ -8,6 +8,9 @@ What to do with cross posts.
 Migrate to Postgres
 Put it on docker
 
+WB_comments20210523 add to wb_comments
+create a sentiment tally
+
 FEATURE ENGINEERING
 UTC to GMT+1
 +-
