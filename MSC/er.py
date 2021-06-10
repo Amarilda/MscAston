@@ -96,7 +96,6 @@ connection.commit()
 connection.close()
 print("Appended to MAIN")
 
-
 print("Starting Wallstreets bets")
 #Getting tickers for sp500
 connection = sqlite3.connect('MSC/MSC.db')
