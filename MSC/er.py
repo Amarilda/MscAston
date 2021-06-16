@@ -51,10 +51,8 @@ for k in kolonas:
 #Drop and create the todays table
 connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
-#a = f"cursor.executescript('DROP TABLE IF EXISTS {thisday}')"
 a = f"cursor.execute('CREATE TABLE if not exists {thisday} ({createtable} )')"
 eval(a)
-#eval(b)
     
 #An actual webscraping
 top_posts = reddit.subreddit('worldnews').top(time_filter='day',limit=30)
