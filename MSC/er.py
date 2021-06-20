@@ -14,6 +14,22 @@ from data import *
 
 client_id, client_secret,password, user_agent, username = credentials
 
+import datetime as dt
+df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
+answer = []
+
+datums = datetime.datetime.now() - datetime.timedelta(days=1)
+answer.append(datums)        
+       
+for i in df.columns[1:]:
+    print(i)
+    i = input()
+    answer.append(i)
+    
+df.loc[len(df)] = answer
+df.to_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv", index = False) 
+print("One day closer to year in pixels")
+
 reddit = praw.Reddit(
     client_id=client_id,
     client_secret=client_secret,
@@ -96,7 +112,7 @@ print("Appended to MAIN")
 
 print("Starting Wallstreets bets")
 #Getting tickers for sp500
-connection = sqlite3.connect('MSC/MSC.db')
+connection = sqlite3.connect('MSC/MSC2.db')
 cursor = connection.cursor()
 sql = ("Select symbol from SP500_companies")
 df = pd.read_sql_query(sql,connection)
@@ -144,7 +160,7 @@ for submission in hot_python:
                 if comment.score > upvotes and auth not in ignoreAuthC: 
                     #df.loc[len(df)] = [submission.title, submission.upvote_ratio, comment.body, comment.score]
                     answer = [datetime.date.today(), submission.title, submission.upvote_ratio, comment.score, comment.body]
-                    connection = sqlite3.connect('MSC/MSC.db')
+                    connection = sqlite3.connect('MSC/MSC2.db')
                     cursor = connection.cursor()
                     sql2 = f'cursor.execute("insert INTO  wb_comments ({columnnames}) VALUES ({insertintotable})", {answer})'
                     eval(sql2)
@@ -287,18 +303,3 @@ for i in df.Symbol:
             except:pass                      
 print('Price injection done')
 
-import datetime as dt
-df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
-answer = []
-
-datums = datetime.datetime.now() - datetime.timedelta(days=1)
-answer.append(datums)        
-       
-for i in df.columns[1:]:
-    print(i)
-    i = input()
-    answer.append(i)
-    
-df.loc[len(df)] = answer
-df.to_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv", index = False) 
-print("One day closer to year in pixels")

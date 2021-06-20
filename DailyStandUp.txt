@@ -19,6 +19,27 @@ Add check for daily table
 Add check for main
 wb_comments duplicates
 
+19/06/2021
+Corrupted MSC with wallstreets bets. 
+At this point continuing this project is futile as none of that will be included into dissertation.
+
+18/06/2021
+Per last supervisor meeting, no ARIMA and no sentiment.
+Nyt data set is enough and provides an ample space for analysis. 
+
+17/06/2021
+pickle file is 2GB and pickle is truncate.
+computer restarted countless times. 
+
+16/06/2021
+found nyt API.
+
+11/06/2021
+Reddit data not enough for dissertation. Will need to find new one.
+Fingers crossed that dont fluke dissertation with not having a data set. 
+not happy. Going to rethink the life.
+And yes, contribution to science apparently is important as well. No pressure a month before submission. 
+
 06/06/2021
 Python do start counting at 0.
 if (datetime.date.today()-datetime.timedelta(days=i)).weekday()< 5:
