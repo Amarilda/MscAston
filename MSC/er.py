@@ -112,7 +112,7 @@ print("Appended to MAIN")
 
 print("Starting Wallstreets bets")
 #Getting tickers for sp500
-connection = sqlite3.connect('MSC/MSC2.db')
+connection = sqlite3.connect('MSC/MSC.db')
 cursor = connection.cursor()
 sql = ("Select symbol from SP500_companies")
 df = pd.read_sql_query(sql,connection)
@@ -160,7 +160,7 @@ for submission in hot_python:
                 if comment.score > upvotes and auth not in ignoreAuthC: 
                     #df.loc[len(df)] = [submission.title, submission.upvote_ratio, comment.body, comment.score]
                     answer = [datetime.date.today(), submission.title, submission.upvote_ratio, comment.score, comment.body]
-                    connection = sqlite3.connect('MSC/MSC2.db')
+                    connection = sqlite3.connect('MSC/MSC.db')
                     cursor = connection.cursor()
                     sql2 = f'cursor.execute("insert INTO  wb_comments ({columnnames}) VALUES ({insertintotable})", {answer})'
                     eval(sql2)
