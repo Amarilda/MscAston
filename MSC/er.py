@@ -23,7 +23,7 @@ answer.append(datums)
        
 for i in df.columns[1:]:
     print(i)
-    i = input()
+    i = input() or 0
     answer.append(i)
     
 df.loc[len(df)] = answer
