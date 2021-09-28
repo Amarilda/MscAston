@@ -14,21 +14,25 @@ from data import *
 
 client_id, client_secret,password, user_agent, username = credentials
 
+#thinking your feelings
 import datetime as dt
 df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
-answer = []
+if pd.to_datetime(df.date[len(df)-1]) != (datetime.datetime.now() - datetime.timedelta(days=1)).date():
+    answer = []
 
-datums = datetime.datetime.now() - datetime.timedelta(days=1)
-answer.append(datums)        
-       
-for i in df.columns[1:]:
-    print(i)
-    i = input() or 0
-    answer.append(i)
-    
-df.loc[len(df)] = answer
-df.to_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv", index = False) 
-print("One day closer to year in pixels")
+    datums = (datetime.datetime.now() - datetime.timedelta(days=1)).date()
+    print(datums.strftime('%d/%m/%y'))
+    answer.append(datums)        
+        
+    for i in df.columns[1:]:
+        print(i)
+        i = input() or 0
+        answer.append(i)
+        
+    df.loc[len(df)] = answer
+    df.to_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv", index = False) 
+    print("One day closer to year in pixels")
+else:pass
 
 reddit = praw.Reddit(
     client_id=client_id,
@@ -39,7 +43,7 @@ reddit = praw.Reddit(
 )
 print(reddit.user.me())
 
-###Individual table
+###TOP30 Reddit daily table
 top_posts = reddit.subreddit('worldnews').top(time_filter='day',limit=30)
 
 #Get all unique columns
@@ -136,58 +140,61 @@ subreddit = reddit.subreddit('wallstreetbets')
 hot_python = subreddit.hot()    # sorting posts by hot
 # Extracting comments, symbols from subreddit
 for submission in hot_python:
-    flair = submission.link_flair_text 
-    author = submission.author.name         
+    try:
+        flair = submission.link_flair_text 
+        author = submission.author.name         
 
-    # checking: post upvote ratio # of upvotes, post flair, and author 
-    if submission.upvote_ratio >= upvoteRatio and submission.ups > ups and (flair in post_flairs or flair is None) and author not in ignoreAuthP:   
-        submission.comment_sort = 'new'     
-        comments = submission.comments
-        titles.append(submission.title)
-        posts += 1
-        try: 
-            submission.comments.replace_more(limit=limit)   
-            for comment in comments:
-                # try except for deleted account?
-                try: auth = comment.author.name
-                except: pass
-                c_analyzed += 1
-                answer = []
-                columnnames = "'date','thread', 'upvote_ratio', 'likes', 'comment'"
-                insertintotable = '?,?,?,?,?'
+        # checking: post upvote ratio # of upvotes, post flair, and author 
+        if submission.upvote_ratio >= upvoteRatio and submission.ups > ups and (flair in post_flairs or flair is None) and author not in ignoreAuthP:   
+            submission.comment_sort = 'new'     
+            comments = submission.comments
+            titles.append(submission.title)
+            posts += 1
+            try: 
+                submission.comments.replace_more(limit=limit)   
+                for comment in comments:
+                    # try except for deleted account?
+                    try: auth = comment.author.name
+                    except: pass
+                    c_analyzed += 1
+                    answer = []
+                    columnnames = "'date','thread', 'upvote_ratio', 'likes', 'comment'"
+                    insertintotable = '?,?,?,?,?'
 
-                # checking: comment upvotes and author
-                if comment.score > upvotes and auth not in ignoreAuthC: 
-                    #df.loc[len(df)] = [submission.title, submission.upvote_ratio, comment.body, comment.score]
-                    answer = [datetime.date.today(), submission.title, submission.upvote_ratio, comment.score, comment.body]
-                    connection = sqlite3.connect('MSC/MSC.db')
-                    cursor = connection.cursor()
-                    sql2 = f'cursor.execute("insert INTO  wb_comments ({columnnames}) VALUES ({insertintotable})", {answer})'
-                    eval(sql2)
-                    connection.commit()
-                    connection.close()
-                    split = comment.body.split(" ")
-                    for word in split:
-                        word = word.replace("$", "")        
-                        # upper = ticker, length of ticker <= 5, excluded words,                     
-                        if word.isupper() and len(word) <= 5 and word not in blacklist and word in us:
-                            # unique comments, try/except for key errors
-                            if uniqueCmt and auth not in goodAuth:
-                                try: 
-                                    if auth in cmt_auth[word]:break
-                                except: pass
-                            # counting tickers
-                            if word in tickers:
-                                tickers[word] += 1
-                                a_comments[word].append(comment.body)
-                                cmt_auth[word].append(auth)
-                                count += 1
-                            else:                               
-                                tickers[word] = 1
-                                cmt_auth[word] = [auth]
-                                a_comments[word] = [comment.body]
-                                count += 1   
-        except Exception as e: print(e)
+                    # checking: comment upvotes and author
+                    if comment.score > upvotes and auth not in ignoreAuthC: 
+                        #df.loc[len(df)] = [submission.title, submission.upvote_ratio, comment.body, comment.score]
+                        answer = [datetime.date.today(), submission.title, submission.upvote_ratio, comment.score, comment.body]
+                        connection = sqlite3.connect('MSC/MSC.db')
+                        cursor = connection.cursor()
+                        sql2 = f'cursor.execute("insert INTO  wb_comments ({columnnames}) VALUES ({insertintotable})", {answer})'
+                        eval(sql2)
+                        connection.commit()
+                        connection.close()
+                        split = comment.body.split(" ")
+                        for word in split:
+                            word = word.replace("$", "")        
+                            # upper = ticker, length of ticker <= 5, excluded words,                     
+                            if word.isupper() and len(word) <= 5 and word not in blacklist and word in us:
+                                # unique comments, try/except for key errors
+                                if uniqueCmt and auth not in goodAuth:
+                                    try: 
+                                        if auth in cmt_auth[word]:break
+                                    except: pass
+                                # counting tickers
+                                if word in tickers:
+                                    tickers[word] += 1
+                                    a_comments[word].append(comment.body)
+                                    cmt_auth[word].append(auth)
+                                    count += 1
+                                else:                               
+                                    tickers[word] = 1
+                                    cmt_auth[word] = [auth]
+                                    a_comments[word] = [comment.body]
+                                    count += 1   
+            except Exception as e: print(e)
+    except:
+        pass
 # sorts the dictionary
 symbols = dict(sorted(tickers.items(), key=lambda item: item[1], reverse = True))
 print("wb_comments done")
