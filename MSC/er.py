@@ -114,6 +114,151 @@ connection.commit()
 connection.close()
 print("Appended to MAIN")
 
+#NYT new articles
+connection = sqlite3.connect('MSC/ny.db')
+cursor = connection.cursor()
+sql = ("select _id || ' ' || strftime('%d-%m-%Y', pub_date) as ids from articles where strftime('%m', pub_date) = strftime('%m', date()) and strftime('%Y', pub_date) = strftime('%Y', date())")
+dd = pd.read_sql_query(sql,connection)
+
+print(len(dd.ids))
+ignore = list(dd.ids)
+
+import datetime as dt
+from nytimes_scraper.nyt_api import NytApi
+api_key = 'JAFAGbwOJBrMxfYD3fZ09xejyXW1fRl1'
+api = NytApi(api_key)
+
+df = pd.DataFrame(columns = ['_id','abstract',
+ 'web_url',
+ 'snippet',
+ 'lead_paragraph',
+ 'source',
+ 'multimedia',
+ 'keywords',
+ 'pub_date',
+ 'document_type',
+ 'news_desk',
+ 'section_name',
+ 'type_of_material',
+ 'word_count',
+ 'uri',
+ 'text',
+ 'subsection_name',
+ 'print_section',
+ 'print_page',
+ 'headline.main',
+ 'headline.kicker',
+ 'headline.content_kicker',
+ 'headline.print_headline',
+ 'headline.name',
+ 'headline.seo',
+ 'headline.sub',
+ 'byline.original',
+ 'byline.person',
+ 'byline.organization'] )
+
+bank_holidays = [datetime.date(2020, 1, 1),
+ datetime.date(2020, 1, 20),
+ datetime.date(2020, 2, 17),
+ datetime.date(2020, 4, 10),
+ datetime.date(2020, 5, 25),
+ datetime.date(2020, 7, 4),
+ datetime.date(2020, 7, 3),
+ datetime.date(2020, 9, 7),
+ datetime.date(2020, 11, 26),
+ datetime.date(2020, 12, 25),
+ datetime.date(2021, 1, 1),
+ datetime.date(2021, 12, 31),
+ datetime.date(2021, 1, 18),
+ datetime.date(2021, 2, 15),
+ datetime.date(2021, 4, 2),
+ datetime.date(2021, 5, 31),
+ datetime.date(2021, 7, 4),
+ datetime.date(2021, 7, 5),
+ datetime.date(2021, 9, 6),
+ datetime.date(2021, 10, 11),
+ datetime.date(2021, 11, 11),
+ datetime.date(2021, 11, 25),
+ datetime.date(2021, 12, 25),
+ datetime.date(2021, 12, 24)]
+
+date=datetime.datetime.now().date()
+
+articles = api.archive.archive(date.year, date.month)['response']['docs']
+for article in articles:
+    if str(article['_id']+' '+  pd.to_datetime(article['pub_date']).strftime('%d-%m-%Y')) in ignore:
+        pass      
+    else:
+        atbilde = []
+
+        for columns in ['_id', 'abstract', 'web_url', 'snippet', 'lead_paragraph', 'source','multimedia', 'keywords', 'pub_date', 'document_type', 'news_desk','section_name', 'type_of_material', 'word_count', 'uri', 'text', 'subsection_name', 'print_section','print_page']:
+            try:
+                atbilde.append(article[columns])
+            except:
+                atbilde.append('')
+
+        for i in ['headline.main', 'headline.kicker', 'headline.content_kicker','headline.print_headline', 'headline.name', 'headline.seo','headline.sub', 'byline.original', 'byline.person','byline.organization']:
+            try:
+                m, n = i.split('.')
+                atbilde.append(article[m][n])
+            except:
+                atbilde.append('')
+        df.loc[len(df)] = atbilde
+
+if len(df) == 0:pass
+else:
+    print(datetime.datetime.now())
+    print(len(df))
+
+    df = df[['_id', 'abstract', 'web_url', 'snippet', 'lead_paragraph', 'source',
+        'multimedia', 'keywords', 'pub_date', 'document_type', 'news_desk',
+        'section_name', 'type_of_material', 'word_count', 'uri', 'text',
+        'headline.main', 'headline.kicker', 'headline.content_kicker',
+        'headline.print_headline', 'headline.name', 'headline.seo',
+        'headline.sub', 'byline.original', 'byline.person',
+        'byline.organization', 'subsection_name', 'print_section',
+        'print_page']]
+
+    df.pub_date = pd.to_datetime(df.pub_date).dt.tz_convert('America/New_York')
+    df.to_csv('xxxx.csv', index = False)
+    df = pd.read_csv('xxxx.csv')
+
+    connection = sqlite3.connect('MSC/ny.db')
+    cursor = connection.cursor()
+    df.to_sql('articles', connection, index = False, if_exists = 'append')
+    connection.commit()
+    connection.close()
+
+    print('NYT articles entered')
+
+    atbildes = []
+
+    for i in df.pub_date:
+        date = pd.to_datetime(i)
+
+        if date.hour >15:
+            date_new = date.normalize()+ datetime.timedelta(days=1)
+        else:
+            date_new = date.normalize()
+
+        while date_new.weekday() >4 or date_new.date() in bank_holidays:
+            date_new = date_new.normalize()+ datetime.timedelta(days=1)
+        
+        atbildes.append(str(date_new.date()))
+        
+    df['w_day'] = atbildes
+
+    connection = sqlite3.connect('ny.db')
+    cursor = connection.cursor()
+    df.to_sql('main', connection, index = False, if_exists = 'append')
+    connection.commit()
+    connection.close()
+
+print('NYT main entered')
+            
+
+
+
 print("Starting Wallstreets bets")
 #Getting tickers for sp500
 connection = sqlite3.connect('MSC/MSC.db')
