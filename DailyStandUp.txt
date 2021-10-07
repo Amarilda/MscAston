@@ -19,13 +19,23 @@ Add check for daily table
 Add check for main
 wb_comments duplicates
 
+30/09/2021
+Pub_date is fixed, converted from UTC. 
+Not sure how to check if previous were UTC or America/New York
+It apperas that new articles are added to api.archive once an hour, not incremently. 
+
+29/09/2021
+Whop, whop!!!
+I did understand and rewrote nyt_scraper scraper for new articles.
+Now it takes less than minute to obtain new articles and entering them into database.
+pub_date to be fixed. at the moment it is text.
+text is sting '' 
+
 21/09/2021
 start project MSC cleanup
 migrate from ipnyb to py
 switch from jupyter to visual studio code
 starting size 37.78Gb & 206 items, 185 changed files in GitHub
-
-
 
 19/06/2021
 Corrupted MSC with wallstreets bets. 
