@@ -9,10 +9,8 @@ import re
 import locale
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-from credentials import credentials
+from credentials import *
 from data import *
-
-client_id, client_secret,password, user_agent, username, api_key = credentials
 
 #thinking your feelings
 import datetime as dt
@@ -119,8 +117,6 @@ connection = sqlite3.connect('MSC/ny.db')
 cursor = connection.cursor()
 sql = ("select _id || ' ' || strftime('%d-%m-%Y', pub_date) as ids from articles where strftime('%m', pub_date) = strftime('%m', date()) and strftime('%Y', pub_date) = strftime('%Y', date())")
 dd = pd.read_sql_query(sql,connection)
-
-print(len(dd.ids))
 ignore = list(dd.ids)
 
 from nytimes_scraper.nyt_api import NytApi
@@ -253,7 +249,16 @@ else:
     connection.close()
 
 print('NYT main entered')
-            
+
+reddit = praw.Reddit(
+    client_id=client_id,
+    client_secret=client_secret,
+    password=password,
+    user_agent=user_agent,
+    username=username,
+)
+print(reddit.user.me())
+
 print("Starting Wallstreets bets")
 #Getting tickers for sp500
 connection = sqlite3.connect('MSC/MSC.db')
@@ -386,3 +391,78 @@ for symbol in picks_sentiment:
         scores[symbol][key] = scores[symbol][key] / symbols[symbol]
         scores[symbol][key]  = "{pol:.3f}".format(pol=scores[symbol][key])
 print("wb_sentiment done")
+
+connection = sqlite3.connect('MSC/marmelde.db')
+cursor = connection.cursor()
+sql = ("select * from  sludinajumi")
+df = pd.read_sql_query(sql,connection)
+
+existing = []
+for i in df.Url:
+    existing.append(i[17:])
+
+print(len(existing))
+
+#Loop through pages
+urls = []
+urls.append('https://www.ss.lv/lv/real-estate/flats/jurmala/sell/')
+for i in range(1, 16):
+    dz = "https://www.ss.lv/lv/real-estate/flats/jurmala/sell/page"+str(i)+".html"
+    urls.append(dz)    
+
+if len(a) ==0:pass
+else:
+    #Include all Jurmala. After EDA can reduce it to +- 5 km.m 
+    a = []
+    for url in urls:
+        r = requests.get(url)
+        data = r.text
+        soup = BeautifulSoup(data)
+        for link in soup.find_all('a', href=True):
+            if link['href'].startswith( '/msg' ) and link['href'] not in a and link['href'] not in existing:
+                a.append(link['href'])
+
+    url_ss = "https://www.ss.lv"
+    for i in a:
+        ex = []
+        bildes = []
+        full_web_address = url_ss+i
+        #print(full_web_address)
+        ex.append(full_web_address)
+        r = requests.get(full_web_address)
+        data = r.text
+        soup = BeautifulSoup(data)
+        #print()    
+        table_MN = pd.read_html(full_web_address)
+
+        frames = [table_MN[3], table_MN[4], table_MN[5]]
+        result = pd.concat(frames)
+
+        for i in ['Pilsēta:', 'Rajons:', 'Iela:', 'Istabas:','Platība:','Stāvs:', 'Sērija:', 'Mājas tips:', 'Ērtības:','Cena:']:
+            if i in result[0].unique():
+                ex.append(result.loc[result[0] == i, (1)].item())
+            else:
+                ex.append('FALSE')
+        if table_MN[7].shape[0] == 4:
+            ex.append(table_MN[7][2][1][8:])
+            ex.append(table_MN[7][2][2][28:])
+        else:
+            ex.append(table_MN[8][2][1][8:])
+            ex.append(table_MN[8][2][2][28:])
+        #Datums
+        ex.append(datetime.datetime.now())
+        #Advertisment text. Just in case. Todays mission is just to get it working. run now analyse later. 
+        ex.append(str(soup.find_all("div", {"id": "msg_div_msg"})))
+        
+        for link in soup.find_all('a', href=True):
+            if 'gallery' in link['href']:
+                bildes.append(link['href'])
+        ex.append(bildes)       
+        df.loc[len(df)]= ex
+    print(df.shape)
+    connection = sqlite3.connect('MSC/marmelde.db')
+    cursor = connection.cursor()
+    df.to_sql('sludinajumi', connection, index = False)
+    connection.commit()
+    connection.close()
+print('ss sell scraped')
