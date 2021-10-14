@@ -122,60 +122,7 @@ ignore = list(dd.ids)
 from nytimes_scraper.nyt_api import NytApi
 api = NytApi(api_key)
 
-df = pd.DataFrame(columns = ['_id','abstract',
- 'web_url',
- 'snippet',
- 'lead_paragraph',
- 'source',
- 'multimedia',
- 'keywords',
- 'pub_date',
- 'document_type',
- 'news_desk',
- 'section_name',
- 'type_of_material',
- 'word_count',
- 'uri',
- 'text',
- 'subsection_name',
- 'print_section',
- 'print_page',
- 'headline.main',
- 'headline.kicker',
- 'headline.content_kicker',
- 'headline.print_headline',
- 'headline.name',
- 'headline.seo',
- 'headline.sub',
- 'byline.original',
- 'byline.person',
- 'byline.organization'] )
-
-bank_holidays = [datetime.date(2020, 1, 1),
- datetime.date(2020, 1, 20),
- datetime.date(2020, 2, 17),
- datetime.date(2020, 4, 10),
- datetime.date(2020, 5, 25),
- datetime.date(2020, 7, 4),
- datetime.date(2020, 7, 3),
- datetime.date(2020, 9, 7),
- datetime.date(2020, 11, 26),
- datetime.date(2020, 12, 25),
- datetime.date(2021, 1, 1),
- datetime.date(2021, 12, 31),
- datetime.date(2021, 1, 18),
- datetime.date(2021, 2, 15),
- datetime.date(2021, 4, 2),
- datetime.date(2021, 5, 31),
- datetime.date(2021, 7, 4),
- datetime.date(2021, 7, 5),
- datetime.date(2021, 9, 6),
- datetime.date(2021, 10, 11),
- datetime.date(2021, 11, 11),
- datetime.date(2021, 11, 25),
- datetime.date(2021, 12, 25),
- datetime.date(2021, 12, 24)]
-
+df = pd.DataFrame(columns = kkolonas)
 date=datetime.datetime.now().date()
 
 articles = api.archive.archive(date.year, date.month)['response']['docs']
@@ -204,19 +151,14 @@ else:
     print(datetime.datetime.now())
     print(len(df))
 
-    df = df[['_id', 'abstract', 'web_url', 'snippet', 'lead_paragraph', 'source',
-        'multimedia', 'keywords', 'pub_date', 'document_type', 'news_desk',
-        'section_name', 'type_of_material', 'word_count', 'uri', 'text',
-        'headline.main', 'headline.kicker', 'headline.content_kicker',
-        'headline.print_headline', 'headline.name', 'headline.seo',
-        'headline.sub', 'byline.original', 'byline.person',
-        'byline.organization', 'subsection_name', 'print_section',
-        'print_page']]
+    df = df[kkkolonas]
 
     df.pub_date = pd.to_datetime(df.pub_date).dt.tz_convert('America/New_York')
-    df.to_csv('xxxx.csv', index = False)
-    df = pd.read_csv('xxxx.csv')
-
+    df = df.applymap(str)
+    '''
+        df.to_csv('xxxx.csv', index = False)
+        df = pd.read_csv('xxxx.csv')
+    '''
     connection = sqlite3.connect('MSC/ny.db')
     cursor = connection.cursor()
     df.to_sql('articles', connection, index = False, if_exists = 'append')
@@ -392,7 +334,8 @@ for symbol in picks_sentiment:
         scores[symbol][key]  = "{pol:.3f}".format(pol=scores[symbol][key])
 print("wb_sentiment done")
 
-connection = sqlite3.connect('MSC/marmelde.db')
+
+connection = sqlite3.connect('MSC/marmelade.db')
 cursor = connection.cursor()
 sql = ("select * from  sludinajumi")
 df = pd.read_sql_query(sql,connection)
@@ -402,6 +345,7 @@ for i in df.Url:
     existing.append(i[17:])
 
 print(len(existing))
+started = len(existing)
 
 #Loop through pages
 urls = []
@@ -410,18 +354,18 @@ for i in range(1, 16):
     dz = "https://www.ss.lv/lv/real-estate/flats/jurmala/sell/page"+str(i)+".html"
     urls.append(dz)    
 
+#Include all Jurmala. After EDA can reduce it to +- 5 km.m 
+a = []
+for url in urls:
+    r = requests.get(url)
+    data = r.text
+    soup = BeautifulSoup(data)
+    for link in soup.find_all('a', href=True):
+        if link['href'].startswith( '/msg' ) and link['href'] not in a and link['href'] not in existing:
+            a.append(link['href'])
+
 if len(a) ==0:pass
 else:
-    #Include all Jurmala. After EDA can reduce it to +- 5 km.m 
-    a = []
-    for url in urls:
-        r = requests.get(url)
-        data = r.text
-        soup = BeautifulSoup(data)
-        for link in soup.find_all('a', href=True):
-            if link['href'].startswith( '/msg' ) and link['href'] not in a and link['href'] not in existing:
-                a.append(link['href'])
-
     url_ss = "https://www.ss.lv"
     for i in a:
         ex = []
@@ -450,9 +394,9 @@ else:
             ex.append(table_MN[8][2][1][8:])
             ex.append(table_MN[8][2][2][28:])
         #Datums
-        ex.append(datetime.datetime.now())
+        ex.append(str(datetime.datetime.now()))
         #Advertisment text. Just in case. Todays mission is just to get it working. run now analyse later. 
-        ex.append(str(soup.find_all("div", {"id": "msg_div_msg"})))
+        ex.append({str(soup.find_all("div", {"id": "msg_div_msg"}))})
         
         for link in soup.find_all('a', href=True):
             if 'gallery' in link['href']:
@@ -460,9 +404,10 @@ else:
         ex.append(bildes)       
         df.loc[len(df)]= ex
     print(df.shape)
-    connection = sqlite3.connect('MSC/marmelde.db')
+    connection = sqlite3.connect('MSC/marmelade.db')
     cursor = connection.cursor()
-    df.to_sql('sludinajumi', connection, index = False)
+    df = df.applymap(str)
+    df[started:].to_sql('sludinajumi', connection, index = False, if_exists = 'append')
     connection.commit()
     connection.close()
 print('ss sell scraped')
