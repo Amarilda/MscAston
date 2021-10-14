@@ -5,5 +5,5 @@ MSC/.ipynb_checkpoints/Reddit API-checkpoint.ipynb
 MSC/__pycache__/credentials.cpython-38.pyc
 MSC/SP500.xlsx
 MSC/.vscode/launch.json
-MSC/.ipynb_checkpoints
-MSC/data
+MSC/.ipynb_checkpoints/
+MSC/data/
