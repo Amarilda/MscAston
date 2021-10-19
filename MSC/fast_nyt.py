@@ -34,9 +34,7 @@ def NYT_articles():
 
     if len(df) == 0:pass
     else:
-        print(datetime.datetime.now())
         df = df[kkkolonas]
-
         df.pub_date = pd.to_datetime(df.pub_date).dt.tz_convert('America/New_York')
         df = df.applymap(str)
         '''
@@ -45,6 +43,7 @@ def NYT_articles():
         '''
         connection = sqlite3.connect('MSC/ny.db')
         cursor = connection.cursor()
+        print(len(df))
         df.to_sql('articles', connection, index = False, if_exists = 'append')
         connection.commit()
         connection.close()
@@ -67,5 +66,5 @@ def NYT_articles():
         connection.commit()
         connection.close()
 
-    print('NYT main entered')
+        print('NYT main entered')
     print()
