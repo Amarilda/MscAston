@@ -13,8 +13,6 @@ def ss():
     existing = []
     for i in df.Url:
         existing.append(i[17:])
-
-    print(len(existing))
     started = len(existing)
 
     #Loop through pages
