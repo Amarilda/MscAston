@@ -4,4 +4,4 @@ MSC/SP500.xlsx
 MSC/.vscode/
 MSC/.ipynb_checkpoints/
 MSC/data/
-.db
+*.db
