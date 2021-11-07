@@ -5,3 +5,4 @@ MSC/.vscode/
 MSC/.ipynb_checkpoints/
 MSC/data/
 *.db
+MSC/MSC.db
