@@ -1,12 +1,14 @@
 import pandas as pd
 import datetime
+from docxlatex import Document
 
 def ThinkingTheFeelings():
     df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
-    if pd.to_datetime(df.date[len(df)-1]) != (datetime.datetime.now() - datetime.timedelta(days=1)).date():
+    if pd.to_datetime(df.date[len(df)-1]) != (datetime.datetime.now()).date():
         answer = []
 
-        datums = (datetime.datetime.now() - datetime.timedelta(days=1)).date()
+        #datums = (datetime.datetime.now() - datetime.timedelta(days=1)).date()
+        datums = (datetime.datetime.now()).date()
         print(datums.strftime('%d/%m/%y'))
         answer.append(datums)        
             
@@ -22,3 +24,16 @@ def ThinkingTheFeelings():
     else:
         print('You got this')
         pass
+
+    # This is Amarilda
+
+    df = pd.read_csv('MSC/amarilda.csv')
+    atbilde = []
+    atbilde.append(datetime.datetime.now())
+
+    doc = Document("/Users/Edite/Desktop/Amarilda.docx")
+    text = doc.get_text()
+    atbilde.append(len(text.split()))
+
+    df.loc[len(df)] = atbilde
+    df.to_csv('MSC/amarilda.csv', index = False)
