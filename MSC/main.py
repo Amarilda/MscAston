@@ -7,6 +7,7 @@ from marmelade import ss
 from wb import stonks
 
 
+
 if __name__ == '__main__':
     fire.Fire(ThinkingTheFeelings)
     fire.Fire(world_news)
