@@ -37,3 +37,48 @@ def ThinkingTheFeelings():
 
     df.loc[len(df)] = atbilde
     df.to_csv('MSC/amarilda.csv', index = False)
+
+    if df['word count'].iloc[-1] == df['word count'].iloc[-2]:
+        pass
+    else:
+        print(df['word count'].iloc[-1] ,df['word count'].iloc[-2])
+
+        ## read the doc    
+        doc = Document("/Users/Edite/Desktop/Amarilda.docx")
+        text = doc.get_text()
+
+        # extract chapters from the table of contents
+        chapters = []
+
+        for i in text[20:text.find('8 Lessons, rules for bright future')+34].split('\n\n'):
+            if len(i) != 3 and len(i) != 4:
+                i = i.strip()
+                # remove heading number and ending page number
+                i = i[:i.find('\t')]
+                chapters.append(i)  
+
+        start = text.find('Please describe in detail up to six significant experiences that happened to you during this period of your life. You can describe positive and negative experiences. 1k-3k\n\n')+len('Please describe in detail up to six significant experiences that happened to you during this period of your life. You can describe positive and negative experiences. 1k-3k\n\n')
+        # extract text after the table of contents
+        bodies = text[start:]
+
+        df = pd.DataFrame(columns = ['chapter','heading', 'start', 'title length'])
+        main = pd.read_csv('amarilda_hist.csv')
+        for chapter in chapters:
+            df.loc[len(df)] = [chapter[:chapter.find(' ')], chapter[chapter.find(' ')+1:], bodies.find(chapter[chapter.find(' ')+1:]), len(chapter[chapter.find(' ')+1:])]
+
+        ending = list(df['start'][1:])
+        ending.append(len(bodies))
+        df['end'] = ending
+
+        word_count = []
+        for i in range(0,len(df)):
+            word_count.append(len(bodies[df.start[i]:df.end[i]].split())-len(df.heading[i].split()))
+        df['word count'] = word_count
+
+        df['date'] = datetime.date.today()
+
+        df = df[['date','chapter','heading', 'word count']]
+        main.append(df).to_csv('amarilda_hist.csv', index = False)
+
+
+
