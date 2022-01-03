@@ -15,7 +15,7 @@ def NYT_articles():
 
     api = NytApi(api_key)
     df = pd.DataFrame(columns = kkolonas)
-    date=datetime.datetime.now().date()
+    date=datetime.date.today()
 
     articles = api.archive.archive(date.year, date.month)['response']['docs']
     for article in articles:
@@ -67,4 +67,3 @@ def NYT_articles():
         connection.close()
 
         print('NYT main entered')
-    print()
