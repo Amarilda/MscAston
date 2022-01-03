@@ -3,6 +3,7 @@ import sqlite3
 import requests
 from bs4 import BeautifulSoup
 import datetime
+import wget
 
 def ss():
     connection = sqlite3.connect('MSC/marmelade.db')
@@ -63,18 +64,26 @@ def ss():
                 ex.append(table_MN[8][2][2][28:])
             #Datums
             ex.append(str(datetime.datetime.now()))
-            ex.append({str(soup.find_all("div", {"id": "msg_div_msg"}))})
-            
+            ex.append({str(soup.find_all("div", {"id": "msg_div_msg"}))})            
             for link in soup.find_all('a', href=True):
                 if 'gallery' in link['href']:
                     bildes.append(link['href'])
             ex.append(bildes)       
             df.loc[len(df)]= ex
-        print(len(df)-len(existing))
+        print('advertisments: ', len(df)-len(existing))
         connection = sqlite3.connect('MSC/marmelade.db')
         cursor = connection.cursor()
         df = df.applymap(str)
         df[started:].to_sql('sludinajumi', connection, index = False, if_exists = 'append')
         connection.commit()
         connection.close()
-    print()
+
+        df_c = df[started:].reset_index(drop=True)
+
+        for g in range(len(df_c)):
+            for j in df_c.Bildes.iloc[g][1:-1].split(', '):       
+                num = 51+df_c.Url.loc[g][51:].find('/')+1
+                id = df_c.Url.loc[g][num:-5]
+                name = 'MSC/ss/'+id+'_'+j[1:-1][-16:-8]+'.jpg'
+                wget.download(j[1:-1], out = name)
+        print('Pictures saved')
