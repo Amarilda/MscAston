@@ -75,6 +75,8 @@ def world_news():
     columnnames = "'date', 'top1', 'top2', 'top3', 'top4', 'top5', 'top6', 'top7', 'top8', 'top9', 'top10', 'top11', 'top12', 'top13', 'top14', 'top15', 'top16', 'top17', 'top18', 'top19', 'top20', 'top21', 'top22', 'top23', 'top24', 'top25', 'top26', 'top27', 'top28', 'top29', top30"
     insertintotable = '?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?'
     answer = [z.date[0]] +[i for i in  z.title]
+    for i in range(0, 31-len(answer)):
+        answer.append("")
 
     connection = sqlite3.connect('MSC/MSC.db')
     cursor = connection.cursor()
