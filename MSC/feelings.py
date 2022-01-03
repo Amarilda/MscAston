@@ -41,7 +41,8 @@ def ThinkingTheFeelings():
     if df['word count'].iloc[-1] == df['word count'].iloc[-2]:
         pass
     else:
-        print(df['word count'].iloc[-1] ,df['word count'].iloc[-2])
+        print('Self authoring. Words written: ', df['word count'].iloc[-1] - df['word count'].iloc[-2])
+        print('short: '+ str(df['word count'].iloc[-1]/(7*6*1000)*100) +'% done, long: ' +str(df['word count'].iloc[-1]/(7*6*3000)*100) +'% done')
 
         ## read the doc    
         doc = Document("/Users/Edite/Desktop/Amarilda.docx")
@@ -50,7 +51,7 @@ def ThinkingTheFeelings():
         # extract chapters from the table of contents
         chapters = []
 
-        for i in text[20:text.find('8 Lessons, rules for bright future')+34].split('\n\n'):
+        for i in text[20:text.find('8 Lessons, rules for bright future')+38].split('\n\n'):
             if len(i) != 3 and len(i) != 4:
                 i = i.strip()
                 # remove heading number and ending page number
@@ -62,7 +63,7 @@ def ThinkingTheFeelings():
         bodies = text[start:]
 
         df = pd.DataFrame(columns = ['chapter','heading', 'start', 'title length'])
-        main = pd.read_csv('amarilda_hist.csv')
+        main = pd.read_csv('MSC/amarilda_hist.csv')
         for chapter in chapters:
             df.loc[len(df)] = [chapter[:chapter.find(' ')], chapter[chapter.find(' ')+1:], bodies.find(chapter[chapter.find(' ')+1:]), len(chapter[chapter.find(' ')+1:])]
 
@@ -78,7 +79,7 @@ def ThinkingTheFeelings():
         df['date'] = datetime.date.today()
 
         df = df[['date','chapter','heading', 'word count']]
-        main.append(df).to_csv('amarilda_hist.csv', index = False)
+        main.append(df).to_csv('MSC/amarilda_hist.csv', index = False)
 
 
 
