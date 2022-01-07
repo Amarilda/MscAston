@@ -26,7 +26,6 @@ def ThinkingTheFeelings():
         pass
 
     # This is Amarilda
-
     df = pd.read_csv('MSC/amarilda.csv')
     atbilde = []
     atbilde.append(datetime.datetime.now())
@@ -42,7 +41,7 @@ def ThinkingTheFeelings():
         pass
     else:
         print('Self authoring. Words written: ', df['word count'].iloc[-1] - df['word count'].iloc[-2])
-        print('short: '+ str(df['word count'].iloc[-1]/(7*6*1000)*100) +'% done, long: ' +str(df['word count'].iloc[-1]/(7*6*3000)*100) +'% done')
+        print('short: '+ str(round(df['word count'].iloc[-1]/(7*6*1000),2)*100) +'% done, long: ' +str(round(df['word count'].iloc[-1]/(7*6*3000),2)*100) +'% done')
 
         ## read the doc    
         doc = Document("/Users/Edite/Desktop/Amarilda.docx")
@@ -81,5 +80,6 @@ def ThinkingTheFeelings():
         df = df[['date','chapter','heading', 'word count']]
         main.append(df).to_csv('MSC/amarilda_hist.csv', index = False)
 
-
+    if df[-1:].index [0] -df.index[df.entry_date == df.entry_date[df['word count'] ==max(df['word count'])].min()] [0] >= 3:
+        print('Please top up your Path Authoring')
 
