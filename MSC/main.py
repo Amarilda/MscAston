@@ -7,13 +7,18 @@ from marmelade import ss
 from wb import stonks
 from darbs import darbs
 
+def main():
 
-
-if __name__ == '__main__':
     fire.Fire(ThinkingTheFeelings)
     fire.Fire(world_news)
     fire.Fire(stonks)
+
     fire.Fire(NYT_articles)
     fire.Fire(ss)
-    fire.Fire(darbs)
-    
+    fire.Fire(darbs) 
+
+
+if __name__ == '__main__':
+    main()
+
+   
