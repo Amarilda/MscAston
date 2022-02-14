@@ -2,6 +2,7 @@ import pandas as pd
 import datetime
 from docxlatex import Document
 import shutil
+import os
 
 def ThinkingTheFeelings():
     df = pd.read_csv("/Users/Edite/Documents/GitHub/KPI/feelings.csv")
@@ -29,17 +30,15 @@ def ThinkingTheFeelings():
     atbilde.append(len(text.split()))
     df.loc[len(df)] = atbilde
     df.to_csv('MSC/amarilda.csv', index = False)
-
-    maximums = max(df['word count'])
-    if (datetime.datetime.now()- pd.to_datetime(min(df.entry_date[df['word count'] == int(maximums) ]))).days >= 3:
-        print('Please top up your Path Authoring')
-
-
+  
     if df['word count'].iloc[-1] == df['word count'].iloc[-2]:
-        pass
+            df = pd.read_csv('MSC/amarilda.csv')
+            maximums = max(df['word count'])
+            if (datetime.date.today() - pd.to_datetime(min(df.entry_date[df['word count'] == int(maximums) ])).date()).days >= 3:
+                print('Please top up your Path Authoring')
     else:
         print('Self authoring. Words written: ', df['word count'].iloc[-1] - df['word count'].iloc[-2])
-        print('short: '+ str(round(df['word count'].iloc[-1]/(7*6*1000),3)*100) +'% done, long: ' +str(round(df['word count'].iloc[-1]/(7*6*3000),3)*100) +'% done')
+        print('short: '+ str(round(df['word count'].iloc[-1]/(7*6*1000)*100,1)) +'% done, long: ' +str(round(df['word count'].iloc[-1]/(7*6*3000)*100,1)) +'% done')
 
         ## read the doc    
         doc = Document("/Users/Edite/Desktop/Amarilda.docx")
