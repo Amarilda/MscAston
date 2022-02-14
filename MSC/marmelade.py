@@ -17,27 +17,27 @@ def ss():
     started = len(existing)
 
     #Loop through pages
-    urls = []
-    urls.append('https://www.ss.lv/lv/real-estate/flats/jurmala/sell/')
+    candidates = []
+    candidates.append('https://www.ss.lv/lv/real-estate/flats/jurmala/sell/')
     for i in range(1, 16):
         dz = "https://www.ss.lv/lv/real-estate/flats/jurmala/sell/page"+str(i)+".html"
-        urls.append(dz)    
+        candidates.append(dz)    
 
     #Include all Jurmala. After EDA can reduce it to +- 5 km.m 
-    a = []
-    for url in urls:
+    vetted = []
+    for url in candidates:
         r = requests.get(url)
         data = r.text
         soup = BeautifulSoup(data, features="lxml")
         for link in soup.find_all('a', href=True):
-            if link['href'].startswith( '/msg' ) and link['href'] not in a and link['href'] not in existing:
-                a.append(link['href'])
+            if link['href'].startswith( '/msg' ) and link['href'] not in vetted and link['href'] not in existing:
+                vetted.append(link['href'])
 
-    if len(a) ==0:
+    if len(vetted) ==0:
         pass
     else:
         url_ss = "https://www.ss.lv"
-        for i in a:
+        for i in vetted:
             ex = []
             bildes = []
             full_web_address = url_ss+i
