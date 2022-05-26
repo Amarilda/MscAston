@@ -50,6 +50,9 @@ def NYT_articles():
         print('NYT articles entered')
         atbildes = []
 
+        if pd.to_datetime(max(bank_holidays)) < datetime.date.today():
+            print('Bank holiday list has expired')
+
         for i in df.pub_date:
             date = pd.to_datetime(i)
             if date.hour >15:
